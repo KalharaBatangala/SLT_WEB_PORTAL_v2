@@ -5,13 +5,13 @@ import "@fontsource/inter";
 import "@fontsource/inter/700.css";
 import "@fontsource/poppins";
 import "@fontsource/sarabun";
-//import LoginOrSignup from "./Pages/Auth/LoginOrSignup";
+import LoginOrSignup from "./Pages/Auth/LoginOrSignup";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<LoginOrSignup />} />
         <Route path="/home" element={<Home />} />
       </Routes>
     </Router>
