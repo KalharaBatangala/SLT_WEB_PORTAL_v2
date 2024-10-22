@@ -1,45 +1,16 @@
-import {
-  AppBar,
-  Container,
-  Toolbar,
-  Box,
-  IconButton,
-  Avatar,
-  FormControl,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
-import iconDownArrow from "../../src/assets/Images/icondownarrow.png";
+import { AppBar, Avatar, Box, Container, FormControl, IconButton, MenuItem, Select, SelectChangeEvent, Toolbar, Typography } from "@mui/material";
+import { useState } from "react";
 import userImage from "../../src/assets/Images/user-profile.png";
-import React, { useState } from "react";
+import useFetchAccountDetails from "../services/useFetchAccountDetails"; // Import the custom hook
 
 const CustomAppBar = () => {
-  const CustomSelectIcon = ({ open }: { open: boolean }) => (
-    <Box sx={{ mr: 1, mt: 1, cursor: "pointer", transition: "transform 0.3s" }}>
-      <img
-        onClick={handleToggleDropdown}
-        src={iconDownArrow}
-        alt="down arrow"
-        style={{
-          width: "1em",
-          height: "1em",
-          transform: open ? "rotate(180deg)" : "rotate(0deg)",
-        }}
-      />
-    </Box>
-  );
-
-  const [account, setAccount] = useState("");
-  const [open, setOpen] = useState(false);
+  const [account, setAccount] = useState(""); // Selected account
+  const [open, setOpen] = useState(false); // Dropdown open/close state
+  const { accounts, error } = useFetchAccountDetails(); // Use the custom hook to fetch accounts
 
   const handleChange = (event: SelectChangeEvent) => {
     setAccount(event.target.value);
     setOpen(false);
-  };
-
-  const handleToggleDropdown = () => {
-    setOpen((prev) => !prev);
   };
 
   return (
@@ -56,21 +27,10 @@ const CustomAppBar = () => {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ display: "flex", alignItems: "center", mr: 2 }}>
-            <img
-              src="src/assets/images/SLTMobitel_Logo.svg 2.png"
-              alt="Logo"
-              style={{ height: "8vh", minHeight: "50px" }}
-            />
+            <img src="src/assets/images/SLTMobitel_Logo.svg 2.png" alt="Logo" style={{ height: "8vh", minHeight: "50px" }} />
           </Box>
 
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: "flex",
-              justifyContent: "end",
-              alignItems: "center",
-            }}
-          >
+          <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "end", alignItems: "center" }}>
             <FormControl
               sx={{
                 mr: 4,
@@ -103,10 +63,7 @@ const CustomAppBar = () => {
                 labelId="select-account-label"
                 id="select-account"
                 value={account}
-                renderValue={(selected) => {
-                  return selected ? selected : "Select Account";
-                }}
-                IconComponent={() => <CustomSelectIcon open={open} />}
+                renderValue={(selected) => (selected ? selected : "Select Account")}
                 onChange={handleChange}
                 displayEmpty
                 open={open}
@@ -116,21 +73,29 @@ const CustomAppBar = () => {
                   color: "#00256A",
                   fontWeight: 600,
                   fontFamily: "Poppins",
-                  "& .MuiSelect-icon": {
-                    color: "#00256A",
-                  },
                 }}
               >
-                <MenuItem value="account1">Account 1</MenuItem>
-                <MenuItem value="account2">Account 2</MenuItem>
-                <MenuItem value="account3">Account 3</MenuItem>
+                {accounts.length > 0 ? (
+                  accounts.map((acc, index) => (
+                    <MenuItem key={index} value={acc.telephoneno}>
+                      {acc.telephoneno} {/* Display the telephone number here */}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem value="">No Accounts Available</MenuItem>
+                )}
               </Select>
             </FormControl>
             <IconButton sx={{ p: 0 }}>
-              <Avatar sx={{height:"50px", width:"auto"}} alt="User Avatar" src={userImage} />
+              <Avatar sx={{ height: "50px", width: "auto" }} alt="User Avatar" src={userImage} />
             </IconButton>
           </Box>
         </Toolbar>
+        {error && (
+          <Typography color="error" sx={{ textAlign: 'center' }}>
+            {error}
+          </Typography>
+        )}
       </Container>
     </AppBar>
   );
