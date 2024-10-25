@@ -1,11 +1,11 @@
-import "./App.css";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Home from "./Pages/Home";
 import "@fontsource/inter";
 import "@fontsource/inter/700.css";
 import "@fontsource/poppins";
 import "@fontsource/sarabun";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import "./App.css";
 import LoginOrSignup from "./Pages/Auth/LoginOrSignup";
+import Home from "./Pages/Home";
 
 function App() {
   return (
