@@ -6,7 +6,7 @@ import fetchAccountDetails from "../services/fetchAccountDetails";
 import useStore from "../services/useAppStore";
 
 const CustomAppBar = () => {
-  const { fetchServiceDetails } = useStore(); // Fetch service details
+  const { fetchServiceDetails,setSelectedTelephone } = useStore();
   const [account, setAccount] = useState(""); // Selected account
   const [open, setOpen] = useState(false); // Dropdown open/close state
   const [accounts,setAccounts] = useState<AccountDetails[]>([])
@@ -14,6 +14,7 @@ const CustomAppBar = () => {
   const handleChange = (event: SelectChangeEvent) => {
     setAccount(event.target.value);
     fetchServiceDetails(event.target.value);
+    setSelectedTelephone(event.target.value);
     setOpen(false);
   };
 
@@ -22,6 +23,7 @@ const CustomAppBar = () => {
       const accountData = await fetchAccountDetails();
       if (accountData && accountData.length > 0) {
         setAccounts(accountData);
+        setSelectedTelephone(accountData[0].telephoneno);
         setAccount(accountData[0].telephoneno);
         fetchServiceDetails(accountData[0].telephoneno)
       }

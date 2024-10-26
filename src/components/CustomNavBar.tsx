@@ -1,11 +1,11 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useStore from "../services/useAppStore";
 
 const CustomNavBar = () => {
-  const { serviceDetails,setSelectedNavbarItem } = useStore();
+  const { serviceDetails,setSelectedNavbarItem,selectedTelephone } = useStore();
   const isPrepaid = serviceDetails?.promotionType === "Prepaid" || serviceDetails?.promotionType === null ;
   const [selectedItem, setSelectedItem] = useState("Broadband");
   const items = [
@@ -21,6 +21,10 @@ const CustomNavBar = () => {
 
   const disabledItems = ["PeoTV","Mobile", "Voice"];
 
+  useEffect(() => {
+    setSelectedNavbarItem("Broadband");
+    setSelectedItem("Broadband");
+  },[selectedTelephone])
   return (
     <Box
       sx={{
