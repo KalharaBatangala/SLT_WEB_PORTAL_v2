@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import WatermarkLogo from "../assets/Images/watermarklogo.png";
 import CircularProgressBar from "./CircularProgressBar";
+import useStore from "../services/useAppStore";
 
 const commonTextStyle = {
   fontSize: "14px",
@@ -59,7 +60,8 @@ const ActionButton = ({ text, variant = "outlined", onClick }: any) => (
   </Button>
 );
 
-const BroadbandDetails = () => {
+
+const BroadbandNavbar = () => {
   const items = [
     { label: "My Package", key: null },
     { label: "Extra GB", key: "N/A" },
@@ -75,19 +77,6 @@ const BroadbandDetails = () => {
   };
   return (
     <Box
-      sx={{
-        display: "flex",
-        gap: 2,
-        flexDirection: "column",
-        backgroundColor: "#FFFFFF",
-        color: "#FFFFFF1A",
-        padding: 1,
-        borderRadius: "10px",
-        height: "100%",
-        boxShadow: "0px 3px 3px #0000004A",
-      }}
-    >
-      <Box
         sx={{
           display: "flex",
           height: "45px",
@@ -143,6 +132,30 @@ const BroadbandDetails = () => {
           );
         })}
       </Box>
+  )
+}
+
+
+
+
+const BroadbandDetails = () => {
+  const { serviceDetails } = useStore();
+  const isPrepaid = serviceDetails?.promotionType === "Prepaid" || serviceDetails?.promotionType === null;  
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        gap: 2,
+        flexDirection: "column",
+        backgroundColor: "#FFFFFF",
+        color: "#FFFFFF1A",
+        padding: 1,
+        borderRadius: "10px",
+        height: "100%",
+        boxShadow: "0px 3px 3px #0000004A",
+      }}
+    >
+      {!isPrepaid && <BroadbandNavbar />}
       <Box sx={{ height: "100%", display: "flex" }}>
         <Box
           sx={{
