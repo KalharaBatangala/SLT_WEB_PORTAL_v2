@@ -1,13 +1,13 @@
 import Box from "@mui/material/Box";
 import homebackgroundImage from "../../src/assets/Images/HomeBackground.png";
-import CustomAppBar from "../components/CustomAppBar";
-import CustomNavBar from "../components/CustomNavBar";
-import ValueAddedServicesMenu from "../components/ValueAddedServicesMenu";
 import AccountBalance from "../components/AccountBalance";
-import MenuLeft from "../components/MenuLeft";
-import QuickAccessMenu from "../components/QuickAccessMenu";
 import Banner from "../components/Banner";
 import BroadbandDetails from "../components/BroadbandDetails";
+import CustomAppBar from "../components/CustomAppBar";
+import CustomNavBar from "../components/CustomNavBar";
+import MenuLeft from "../components/MenuLeft";
+import QuickAccessMenu from "../components/QuickAccessMenu";
+import ValueAddedServicesMenu from "../components/ValueAddedServicesMenu";
 
 const Home = () => {
   return (

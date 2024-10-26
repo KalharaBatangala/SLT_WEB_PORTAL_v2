@@ -1,8 +1,8 @@
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import { useState } from "react";
 import WatermarkLogo from "../assets/Images/watermarklogo.png";
-import React, { useState } from "react";
 import CircularProgressBar from "./CircularProgressBar";
 
 const commonTextStyle = {
