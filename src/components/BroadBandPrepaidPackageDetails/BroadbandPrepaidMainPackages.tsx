@@ -14,6 +14,7 @@ const BroadbandPrepaidMainPackages: React.FC = () => {
   const [packages, setPackages] = useState<
     BroadbandPrepaidMainPackageDetails[]
   >([]);
+  const [pressedButton, setPressedButton] = useState<number>(-1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -59,8 +60,8 @@ const BroadbandPrepaidMainPackages: React.FC = () => {
         boxShadow: "0px 3px 3px #0000004A",
       }}
     >
-      <Box sx={{ display: "flex",gap: 1.5,width: "100%", }}>
-        {packages.map((pkg) => (
+      <Box sx={{ display: "flex", gap: 1.5, width: "100%" }}>
+        {packages.map((pkg, index) => (
           <Card
             sx={{
               backgroundColor: "#0056A2",
@@ -119,13 +120,15 @@ const BroadbandPrepaidMainPackages: React.FC = () => {
                   variant="contained"
                   sx={{
                     mt: 2,
-                    backgroundColor: "white",
-                    color: "#50B748",
+                    backgroundColor:
+                      pressedButton === index ? "#50B748" : "white",
+                    color: pressedButton === index ? "white" : "#50B748",
                     borderRadius: "10px",
                     width: "55%",
                     py: 1.5,
                   }}
                   fullWidth
+                  onClick={() => setPressedButton(index)}
                 >
                   <Typography
                     variant="body2"
@@ -135,8 +138,7 @@ const BroadbandPrepaidMainPackages: React.FC = () => {
                       fontWeight: "600",
                     }}
                   >
-                    {" "}
-                    Activate
+                    {pressedButton === index ? "Activated" : "Activate"}
                   </Typography>
                 </Button>
               </Box>

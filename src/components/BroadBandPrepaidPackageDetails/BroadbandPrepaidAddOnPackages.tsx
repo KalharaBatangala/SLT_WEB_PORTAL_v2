@@ -198,7 +198,7 @@ const BroadbandPrepaidAddOnPackages: React.FC = () => {
                       fontWeight: "600",
                     }}
                   >
-                    Activate
+                    {pressedButtons.includes(index)? "Activated" : "Activate"}
                   </Typography>
                 </Button>
               </Box>
