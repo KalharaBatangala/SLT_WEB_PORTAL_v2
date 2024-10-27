@@ -4,12 +4,33 @@ import userImage from "../../src/assets/Images/user-profile.png";
 import { AccountDetails } from "../types/types";
 import fetchAccountDetails from "../services/fetchAccountDetails";
 import useStore from "../services/useAppStore";
+import iconDownArrow from "../../src/assets/Images/icondownarrow.png";
+
 
 const CustomAppBar = () => {
+  const CustomSelectIcon = ({ open }: { open: boolean }) => (
+    <Box sx={{ mr: 1, mt: 1, cursor: "pointer", transition: "transform 0.3s" }}>
+      <img
+        onClick={handleToggleDropdown}
+        src={iconDownArrow}
+        alt="down arrow"
+        style={{
+          width: "1em",
+          height: "1em",
+          transform: open ? "rotate(180deg)" : "rotate(0deg)",
+        }}
+      />
+    </Box>
+  );
+
   const { fetchServiceDetails,setSelectedTelephone } = useStore();
   const [account, setAccount] = useState(""); // Selected account
   const [open, setOpen] = useState(false); // Dropdown open/close state
   const [accounts,setAccounts] = useState<AccountDetails[]>([])
+
+  const handleToggleDropdown = () => {
+    setOpen((prev) => !prev);
+  };
 
   const handleChange = (event: SelectChangeEvent) => {
     setAccount(event.target.value);
@@ -55,7 +76,7 @@ const CustomAppBar = () => {
                 width: "14vw",
                 minWidth: "200px",
                 color: "#00256A",
-                "&.MuiOutlinedInput-root": {
+                "& .MuiOutlinedInput-root": {
                   height: "5vh",
                   minHeight: "30px",
                   borderRadius: "8px",
@@ -67,7 +88,7 @@ const CustomAppBar = () => {
                   "&:hover fieldset": {
                     borderColor: "#00256A",
                   },
-                  "&.Mui-focused fieldset": {
+                  "& .Mui-focused fieldset": {
                     borderColor: "#00256A",
                     borderWidth: 3,
                   },
@@ -82,6 +103,7 @@ const CustomAppBar = () => {
                 id="select-account"
                 value={account}
                 renderValue={(selected) => (selected ? selected : "Select Account")}
+                IconComponent={() => <CustomSelectIcon open={open} />}
                 onChange={handleChange}
                 displayEmpty
                 open={open}
