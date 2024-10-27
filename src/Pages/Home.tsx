@@ -2,14 +2,15 @@ import Box from "@mui/material/Box";
 import homebackgroundImage from "../../src/assets/Images/HomeBackground.png";
 import AccountBalance from "../components/AccountBalance";
 import Banner from "../components/Banner";
-import BroadbandDetails from "../components/BroadbandDetails";
+import BroadbandSection from "../components/BroadbandSection";
 import CustomAppBar from "../components/CustomAppBar";
 import CustomNavBar from "../components/CustomNavBar";
-import MenuLeft from "../components/MenuLeft";
 import QuickAccessMenu from "../components/QuickAccessMenu";
 import ValueAddedServicesMenu from "../components/ValueAddedServicesMenu";
+import useStore from "../services/useAppStore";
 
 const Home = () => {
+  const { selectedNavbarItem } = useStore();
   return (
     <>
       <Box
@@ -35,7 +36,6 @@ const Home = () => {
             gap: 1,
             width: "100%",
             maxWidth: "90vw",
-            flexGrow: 1,
           }}
         >
           <CustomNavBar />
@@ -45,7 +45,6 @@ const Home = () => {
               justifyContent: "center",
               gap: 1,
               width: "100%",
-
             }}
           >
             <ValueAddedServicesMenu />
@@ -54,15 +53,17 @@ const Home = () => {
           <Box
             sx={{
               width: "100%",
+              height: "100%",
               display: "flex",
+              justifyContent: "end",
               gap: 1,
             }}
           >
-            <Box sx={{ width: "20%", height: "100%"}}>
-              <MenuLeft />
-            </Box>
-            <Box sx={{ width: "55%", height: "100%"}}>
-              <BroadbandDetails />
+            <Box sx={{width: "75%",flexGrow:1 }}>
+              {selectedNavbarItem === "Broadband" && <BroadbandSection />}
+              {selectedNavbarItem === "PeoTV" && <Box sx={{width:"100%",height:"100%", backgroundColor:"white",borderRadius:3}}/>}
+              {selectedNavbarItem === "Voice" && <Box sx={{width:"100%",height:"100%", backgroundColor:"white",borderRadius:3}}/>}
+              {selectedNavbarItem === "Mobile" && <Box sx={{width:"100%",height:"100%", backgroundColor:"white",borderRadius:3}}/>}
             </Box>
             <Box sx={{ width: "25%", height: "100%",display:"flex",flexDirection:"column"}}>
               <QuickAccessMenu />

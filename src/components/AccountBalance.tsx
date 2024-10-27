@@ -1,8 +1,11 @@
 import { Button, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import React from "react";
+import useStore from "../services/useAppStore";
 
 const AccountBalance = () => {
+  const { serviceDetails } = useStore();
+  const isPrepaid = serviceDetails?.promotionType === "Prepaid" || serviceDetails?.promotionType === null;
   return (
     <Box
       sx={{
@@ -25,10 +28,11 @@ const AccountBalance = () => {
           variant="body2"
           sx={{ color: "#0056A2", fontSize: 18, fontWeight: 700 }}
         >
-          Total Payable
+          {isPrepaid ? " Balance":"Total Payable"} 
         </Typography>
         <Typography variant="body2" sx={{ color: "#0056A2", fontSize: 12 }}>
-          For month Ending at{" "}
+          {isPrepaid ? "Expires on ":"For month Ending at "}
+          
           <Typography
             variant="body2"
             component="span"
@@ -49,7 +53,7 @@ const AccountBalance = () => {
         sx={{
           backgroundColor: "#4FD745",
           borderRadius: 2,
-          width: "100px",
+          width: "20%",
           height: "35px",
             "&:hover": {
                 backgroundColor: "#79D84A",}
@@ -59,7 +63,7 @@ const AccountBalance = () => {
           variant="body2"
           sx={{ color: "#FFFFFF", textTransform: "capitalize", fontSize: 14 }}
         >
-          Pay Now
+          {isPrepaid? "Transaction":"Pay Now"}
         </Typography>
       </Button>
     </Box>

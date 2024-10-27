@@ -1,17 +1,35 @@
-import { AppBar, Avatar, Box, Container, FormControl, IconButton, MenuItem, Select, SelectChangeEvent, Toolbar, Typography } from "@mui/material";
-import { useState } from "react";
+import { AppBar, Avatar, Box, Container, FormControl, IconButton, MenuItem, Select, SelectChangeEvent, Toolbar } from "@mui/material";
+import { useEffect, useState } from "react";
 import userImage from "../../src/assets/Images/user-profile.png";
-import useFetchAccountDetails from "../services/useFetchAccountDetails"; // Import the custom hook
+import { AccountDetails } from "../types/types";
+import fetchAccountDetails from "../services/fetchAccountDetails";
+import useStore from "../services/useAppStore";
 
 const CustomAppBar = () => {
+  const { fetchServiceDetails,setSelectedTelephone } = useStore();
   const [account, setAccount] = useState(""); // Selected account
   const [open, setOpen] = useState(false); // Dropdown open/close state
-  const { accounts, error } = useFetchAccountDetails(); // Use the custom hook to fetch accounts
+  const [accounts,setAccounts] = useState<AccountDetails[]>([])
 
   const handleChange = (event: SelectChangeEvent) => {
     setAccount(event.target.value);
+    fetchServiceDetails(event.target.value);
+    setSelectedTelephone(event.target.value);
     setOpen(false);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const accountData = await fetchAccountDetails();
+      if (accountData && accountData.length > 0) {
+        setAccounts(accountData);
+        setSelectedTelephone(accountData[0].telephoneno);
+        setAccount(accountData[0].telephoneno);
+        fetchServiceDetails(accountData[0].telephoneno)
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <AppBar
@@ -37,7 +55,7 @@ const CustomAppBar = () => {
                 width: "14vw",
                 minWidth: "200px",
                 color: "#00256A",
-                "& .MuiOutlinedInput-root": {
+                "&.MuiOutlinedInput-root": {
                   height: "5vh",
                   minHeight: "30px",
                   borderRadius: "8px",
@@ -91,11 +109,6 @@ const CustomAppBar = () => {
             </IconButton>
           </Box>
         </Toolbar>
-        {error && (
-          <Typography color="error" sx={{ textAlign: 'center' }}>
-            {error}
-          </Typography>
-        )}
       </Container>
     </AppBar>
   );
