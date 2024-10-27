@@ -55,7 +55,7 @@ const CustomAppBar = () => {
                 width: "14vw",
                 minWidth: "200px",
                 color: "#00256A",
-                "& .MuiOutlinedInput-root": {
+                "&.MuiOutlinedInput-root": {
                   height: "5vh",
                   minHeight: "30px",
                   borderRadius: "8px",

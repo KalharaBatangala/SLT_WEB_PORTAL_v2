@@ -4,7 +4,6 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import WatermarkLogo from "../assets/Images/watermarklogo.png";
 import CircularProgressBar from "./CircularProgressBar";
-import useStore from "../services/useAppStore";
 
 const commonTextStyle = {
   fontSize: "14px",
@@ -17,7 +16,12 @@ const commonButtonStyle = {
   width: "90%",
 };
 
-const CustomSection = ({ label, value }: any) => (
+interface CustomSectionProps {
+  label: string;
+  value: string;
+}
+
+const CustomSection = ({ label, value }: CustomSectionProps) => (
   <Typography variant="body2" sx={commonTextStyle}>
     {label}:
     <Typography
@@ -30,7 +34,13 @@ const CustomSection = ({ label, value }: any) => (
   </Typography>
 );
 
-const ActionButton = ({ text, variant = "outlined", onClick }: any) => (
+interface ActionButtonProps {
+  text: string;
+  variant?: "outlined" | "contained";
+  onClick: () => void;
+}
+
+const ActionButton = ({ text, variant = "outlined", onClick }: ActionButtonProps) => (
   <Button
     variant={variant}
     sx={{
@@ -138,9 +148,7 @@ const BroadbandNavbar = () => {
 
 
 
-const BroadbandDetails = () => {
-  const { serviceDetails } = useStore();
-  const isPrepaid = serviceDetails?.promotionType === "Prepaid" || serviceDetails?.promotionType === null;  
+const BroadbandDetailsPostPaid = () => {
   return (
     <Box
       sx={{
@@ -155,7 +163,7 @@ const BroadbandDetails = () => {
         boxShadow: "0px 3px 3px #0000004A",
       }}
     >
-      {!isPrepaid && <BroadbandNavbar />}
+      {<BroadbandNavbar />}
       <Box sx={{ height: "100%", display: "flex" }}>
         <Box
           sx={{
@@ -211,9 +219,9 @@ const BroadbandDetails = () => {
             <CustomSection label="Username" value="12345613213" />
           </Box>
 
-          <ActionButton text="Package Upgrade" variant="outlined" />
-          <ActionButton text="Get Extra GB" variant="contained" />
-          <ActionButton text="Get Data Add-ons" variant="contained" />
+          <ActionButton text="Package Upgrade" variant="outlined" onClick={()=>{}}/>
+          <ActionButton text="Get Extra GB" variant="contained" onClick={()=>{}}/>
+          <ActionButton text="Get Data Add-ons" variant="contained" onClick={()=>{}}/>
           <Box sx={{position:"absolute",zIndex:1, right:"1%", bottom:"1%" }}>
                 <img src={WatermarkLogo}/>
             </Box>
@@ -224,4 +232,4 @@ const BroadbandDetails = () => {
   );
 };
 
-export default BroadbandDetails;
+export default BroadbandDetailsPostPaid;

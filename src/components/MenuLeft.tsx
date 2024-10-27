@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import useStore from "../services/useAppStore";
 
 const MenuLeft = () => {
-  const { serviceDetails, setLeftMenuItem } = useStore();
+  const { serviceDetails, setLeftMenuItem,selectedLeftMenuItem } = useStore();
   const isPrepaid =
     serviceDetails?.promotionType === "Prepaid" ||
     serviceDetails?.promotionType === null;
@@ -26,6 +26,11 @@ const MenuLeft = () => {
     setSelectedItem(isPrepaid? "Main Packages":"Summary")
     setLeftMenuItem(isPrepaid? "Main Packages":"Summary");
   }, [isPrepaid]);
+
+  useEffect(() => {
+    setSelectedItem(selectedLeftMenuItem);
+  }, [selectedLeftMenuItem]);
+
   return (
     <Box
       sx={{
