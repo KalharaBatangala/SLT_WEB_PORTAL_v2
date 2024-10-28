@@ -1,4 +1,3 @@
-// useAppStore.ts
 import { create } from 'zustand';
 import { ServiceDetailsAPIResponse } from '../types/types';
 import fetchServiceDetailByTelephone from './fetchServiceDetails';
@@ -21,40 +20,11 @@ const useStore = create<AppState>((set) => ({
   selectedLeftMenuItem: '',
   setSelectedTelephone: (telephoneNo) => set({ selectedTelephone: telephoneNo }),
   fetchServiceDetails: async (telephoneNo) => {
-    try {
-      const details = await fetchServiceDetailByTelephone(telephoneNo);
-      console.log('Service Detail for', telephoneNo, ':', details); // Debug log
-
-      if (isServiceDetailsAPIResponse(details)) {
-        set({ serviceDetails: details });
-      } else {
-        set({ serviceDetails: null });
-        console.error('Invalid service details response:', details);
-      }
-    } catch (error) {
-      console.error('Failed to fetch service details:', error);
-      set({ serviceDetails: null });
-    }
+    const details = await fetchServiceDetailByTelephone(telephoneNo);
+    set({ serviceDetails: details });
   },
-  setSelectedNavbarItem: (item) => set({ selectedNavbarItem: item }),
-  setLeftMenuItem: (item) => set({ selectedLeftMenuItem: item }),
+    setSelectedNavbarItem: (item) => set({ selectedNavbarItem: item }),
+    setLeftMenuItem: (item) => set({ selectedLeftMenuItem: item }),
 }));
 
 export default useStore;
-
-// Type guard for ServiceDetailsAPIResponse
-function isServiceDetailsAPIResponse(obj: any): obj is ServiceDetailsAPIResponse {
-  return (
-    obj &&
-    typeof obj.accountCategory === 'string' &&
-    typeof obj.accountNo === 'string' &&
-    typeof obj.contactMobile === 'string' &&
-    typeof obj.contactNamewithInit === 'string' &&
-    Array.isArray(obj.listofBBService) &&
-    Array.isArray(obj.listofPEOService) &&
-    Array.isArray(obj.listofVoiceService) &&
-    typeof obj.promotionName === 'string' &&
-    typeof obj.promotionType === 'string' &&
-    (typeof obj.walletAmount === 'number' || obj.walletAmount === null) // Allow null for optional fields
-  );
-}
