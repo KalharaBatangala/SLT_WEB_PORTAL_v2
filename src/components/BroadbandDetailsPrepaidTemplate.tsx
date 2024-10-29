@@ -77,19 +77,21 @@ const ActionButton = ({
 
 interface BroadbandDetailsPrepaidTemplateProps {
   dataBalance: DataBalance[];
+  isMain: boolean;
 }
 
 const BroadbandDetailsPrepaidTemplate = ({
   dataBalance,
+  isMain,
 }: BroadbandDetailsPrepaidTemplateProps) => {
   const { setLeftMenuItem } = useStore();
   const percentage =
-    (parseFloat(dataBalance[0].currentAmount) /
-      parseFloat(dataBalance[0].currentAmount)) *
+    (parseFloat(dataBalance[0]?.currentAmount) /
+      parseFloat(dataBalance[0]?.currentAmount)) *
     100;
-  const initialAmount = parseFloat(dataBalance[0].initialAmount);
-  const currentAmount = parseFloat(dataBalance[0].currentAmount);
-  const expireTime = parseTime(dataBalance[0].expireTime);
+  const initialAmount = parseFloat(dataBalance[0]?.initialAmount);
+  const currentAmount = parseFloat(dataBalance[0]?.currentAmount);
+  const expireTime = parseTime(dataBalance[0]?.expireTime);
   const formattedeExpireTime = expireTime?.toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
@@ -124,25 +126,48 @@ const BroadbandDetailsPrepaidTemplate = ({
             borderRadius: "10px",
           }}
         >
-          <Typography
-            variant="body2"
-            sx={{ fontSize: 20, fontWeight: 700, color: "#0F3B7A" }}
-          >
-            {dataBalance[0].packageName}
-          </Typography>
-          <CircularProgressBar percentage={percentage} />
-          <Typography
-            variant="body2"
-            sx={{ fontSize: 20, fontWeight: 700, color: "#0F3B7A" }}
-          >
-            {`${currentAmount - initialAmount} GB USED OF ${initialAmount} GB`}
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{ fontSize: 16, fontWeight: 500, color: "#0F3B7A" }}
-          >
-            {`Valid Till : ${formattedeExpireTime}`}
-          </Typography>
+          {dataBalance.length > 0 ? (
+            <>
+              <Typography
+                variant="body2"
+                sx={{ fontSize: 20, fontWeight: 700, color: "#0F3B7A" }}
+              >
+                {dataBalance[0]?.packageName}
+              </Typography>
+              <CircularProgressBar percentage={percentage} />
+              <Typography
+                variant="body2"
+                sx={{ fontSize: 20, fontWeight: 700, color: "#0F3B7A" }}
+              >
+                {`${
+                  currentAmount - initialAmount
+                } GB USED OF ${initialAmount} GB`}
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{ fontSize: 16, fontWeight: 500, color: "#0F3B7A" }}
+              >
+                {`Valid Till : ${formattedeExpireTime}`}
+              </Typography>
+            </>
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+                flexgrow: 1,
+              }}
+            >
+              <Typography
+                variant="body2"
+                sx={{ fontSize: 20, fontWeight: 700, color: "#0F3B7A" }}
+              >
+                No Data to Show
+              </Typography>
+            </Box>
+          )}
         </Box>
         <Box
           sx={{
@@ -191,7 +216,7 @@ const BroadbandDetailsPrepaidTemplate = ({
                 fontWeight: 700,
               }}
             >
-              {dataBalance[0].packageCategory}
+              {isMain ? "Main Package" : "Data Add-ons"}
             </Typography>
           </Box>
           <ActionButton
