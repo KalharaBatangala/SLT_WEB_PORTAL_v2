@@ -1,40 +1,53 @@
 import { Button, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import useStore from "../services/useAppStore";
-import { ServiceDetailsAPIResponse } from '../types/types';
+
+import fetchWalletDetail from "../services/fetchWalletDetails";
 
 const AccountBalance: React.FC = () => {
-  const { serviceDetails } = useStore() as { serviceDetails: ServiceDetailsAPIResponse };
-  
-  const walletDetail = serviceDetails?.walletDetail;
-  const isPrepaid = serviceDetails?.promotionType === "Prepaid" || serviceDetails?.promotionType === null;
+  const { serviceDetails, selectedTelephone } = useStore();
+  const [amount, setAmount] = useState("");
+  const [expireTime, setExpireTime] = useState("");
 
-  // Ensure amount is a number, dividing by 100 to match the requested format
-  const amount: number = walletDetail && walletDetail[0]?.balanceDetail[0]?.amount 
-    ? Number(walletDetail[0].balanceDetail[0].amount) / 100 
-    : 0;
-
-  // Format amount to include commas and two decimal places
-  const formattedAmount = amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-  const expireTimeStr = walletDetail ? walletDetail[0]?.balanceDetail[0]?.expireTime : null;
+  const isPrepaid =
+    serviceDetails?.promotionType === "Prepaid" ||
+    serviceDetails?.promotionType === null;
 
   const parseExpireTime = (expireTime: string) => {
     if (expireTime) {
       const year = expireTime.slice(0, 4);
       const month = parseInt(expireTime.slice(4, 6), 10) - 1;
       const day = expireTime.slice(6, 8);
-      
+
       return new Date(Date.UTC(+year, month, +day));
     }
     return null;
   };
 
-  const expireTime = parseExpireTime(expireTimeStr);
-  const formattedExpireDate = expireTime 
-    ? expireTime.toLocaleDateString("en-GB", { year: 'numeric', month: '2-digit', day: '2-digit' }) 
-    : "N/A";
+  useEffect(() => {
+    const fetchData = async () => {
+      const walletDetails = await fetchWalletDetail(selectedTelephone);
+      const amount = walletDetails?.amount ? walletDetails.amount/100 : 0;
+      const formattedAmount = amount.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+      setAmount(formattedAmount);
+
+      const formattedTime = parseExpireTime(walletDetails!.expireTime);
+      const formattedExpireDate = formattedTime
+        ? formattedTime.toLocaleDateString("en-GB", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          })
+        : "N/A";
+
+      setExpireTime(formattedExpireDate);
+    };
+    fetchData();
+  }, [selectedTelephone]);
 
   return (
     <Box
@@ -58,17 +71,17 @@ const AccountBalance: React.FC = () => {
           variant="body2"
           sx={{ color: "#0056A2", fontSize: 18, fontWeight: 700 }}
         >
-          {isPrepaid ? "Balance" : "Total Payable"} 
+          {isPrepaid ? "Balance" : "Total Payable"}
         </Typography>
         <Typography variant="body2" sx={{ color: "#0056A2", fontSize: 12 }}>
           {isPrepaid ? "Expires on " : "For month Ending at "}
-          
+
           <Typography
             variant="body2"
             component="span"
             sx={{ fontSize: 12, fontWeight: 700 }}
           >
-            {formattedExpireDate}
+            {expireTime}
           </Typography>
         </Typography>
       </Box>
@@ -77,7 +90,7 @@ const AccountBalance: React.FC = () => {
         variant="body2"
         sx={{ color: "#0056A2", fontSize: 25, fontWeight: "900" }}
       >
-        Rs.{formattedAmount} {/* Display the formatted amount */}
+        Rs.{amount} {/* Display the formatted amount */}
       </Typography>
       <Button
         sx={{
@@ -86,8 +99,8 @@ const AccountBalance: React.FC = () => {
           width: "20%",
           height: "35px",
           "&:hover": {
-              backgroundColor: "#79D84A",
-          }
+            backgroundColor: "#79D84A",
+          },
         }}
       >
         <Typography

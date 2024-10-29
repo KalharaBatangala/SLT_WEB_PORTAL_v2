@@ -3,7 +3,7 @@ import { AccountDetails } from "../types/types";
 
 const fetchAccountDetails = async () => {
     const token = localStorage.getItem("accessToken");
-
+    console.log("Access Token:", token);
     if (!token) {
       console.error("Access token not found");
       return;
