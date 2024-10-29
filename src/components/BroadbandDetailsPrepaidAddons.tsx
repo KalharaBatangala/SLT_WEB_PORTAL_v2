@@ -1,4 +1,4 @@
-import Typography from "@mui/material/Typography";
+
 import { DataBalance } from "../types/types";
 import BroadbandDetailsPrepaidTemplate from "./BroadbandDetailsPrepaidTemplate";
 
@@ -11,13 +11,7 @@ const BroadbandDetailsPrepaidAddons = ({
 }: BroadbandDetalisPrepaidAddonsProps) => {
   return (
     <>
-      {dataBalance.length > 0 ? (
-        <BroadbandDetailsPrepaidTemplate dataBalance={dataBalance} />
-      ) : (
-        <Typography variant="body2" sx={{ color: "#0056A2", fontSize: 24 }}>
-          No Data Available
-        </Typography>
-      )}
+        <BroadbandDetailsPrepaidTemplate dataBalance={dataBalance} isMain={false}/>
     </>
   );
 };
