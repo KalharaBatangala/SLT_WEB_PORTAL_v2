@@ -1,42 +1,52 @@
-// In types.ts
-
-import { Key, ReactNode } from "react";
-
-// Example definition for AccountDetails
 export interface AccountDetails {
-  accountId: string;
-  accountName: string;
-  accountType: string;
-  balance: number;
-  // Add other fields as necessary
+  accountno: string;
+  status: string;
+  telephoneno: string;
 }
 
-// Example definition for BroadbandPrepaidAddOnPackageDetails
-export interface BroadbandPrepaidAddOnPackageDetails {
-  VALIDITY: ReactNode;
-  PRICE_LKR_WITH_TAX: ReactNode;
-  DATA_VOLUME_GB: ReactNode;
-  ADDON_NAME: ReactNode;
-  OFFERING_ID: Key | null | undefined;
-  packageId: string;
+export interface Service {
+  serviceID: string;
   packageName: string;
-  packagePrice: number;
-  // Add other fields as necessary
+  serviceStatus: string;
+  serviceType: string;
+  updatedDTM: string;
 }
 
-// Example definition for BroadbandPrepaidMainPackageDetails
+export interface ServiceDetailsAPIResponse {
+  accountCategory: string;
+  accountNo: string;
+  contactMobile: string;
+  contactNamewithInit: string;
+  listofBBService: Service[];
+  listofPEOService: Service[];
+  listofVoiceService: Service[];
+  promotionName: string;
+  promotionType: string;
+}
+
 export interface BroadbandPrepaidMainPackageDetails {
-  MYSLT_PKG_NAME: ReactNode;
-  VALIDITY: ReactNode;
-  PRICE_LKR_WITH_TAX: ReactNode;
-  DATA_VOLUME_GB: ReactNode;
-  mainPackageId: string;
-  mainPackageName: string;
-  mainPackagePrice: number;
-  // Add other fields as necessary
+  OFFERING_ID: string;
+  MYSLT_PKG_NAME: string;
+  PRICE_LKR_WITH_TAX: number;
+  DATA_VOLUME_GB?: string;
+  VALIDITY?: number;
 }
 
-// Ensure your existing types are also exported
+export interface BroadbandPrepaidAddOnPackageDetails {
+  OFFERING_ID: string;
+  ADDON_NAME: string;
+  PRICE_LKR_WITH_TAX: number;
+  DATA_VOLUME_GB?: string;
+  VALIDITY?: number;
+}
+
+// export interface WalletDetails {
+//   balanceType: string;
+//   balanceTypeName: string;
+//   totalAmount: string;
+//   balanceDetail: BalanceDetail[];
+// }
+
 export interface BalanceDetail {
   instanceId: string;
   amount: number;
@@ -45,27 +55,4 @@ export interface BalanceDetail {
   expireTime: string;
   originalType: string;
   originalId: string;
-}
-
-export interface DataBundle {
-  balanceType: string;
-  balanceTypeName: string;
-  totalAmount: string;
-  reservedAmount: string;
-  depositFlag: string;
-  refundFlag: string;
-  currencyId: string;
-  balanceDetail: BalanceDetail[];
-}
-
-export interface ServiceDetailsAPIResponse {
-  freeUnitDetail: ServiceDetailsAPIResponse | null;
-  isSuccess: boolean;
-  errorMessege: string | null;
-  exceptionDetail: string | null;
-  dataBundle: DataBundle[];
-  errorShow: string | null;
-  errorCode: string | null;
-  walletDetail?: any; // Adjust this type according to your needs
-  promotionType?: string; // Include the promotionType
 }
