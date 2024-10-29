@@ -25,7 +25,7 @@ const BroadbandPrepaidMainPackages: React.FC = () => {
         const data = await fetchLTEPrepaidMainPackages();
         setPackages(data);
       } catch (error) {
-        setError(`Failed to fetch packages ${error}`);
+        setError(`Failed to fetch packages: ${error}`);
       } finally {
         setLoading(false);
       }
@@ -52,21 +52,31 @@ const BroadbandPrepaidMainPackages: React.FC = () => {
         display: "flex",
         gap: 1,
         flexDirection: "column",
+        alignItems: "center",
         backgroundColor: "#FFFFFF",
         color: "#FFFFFF1A",
         padding: 1.5,
         borderRadius: "10px",
         height: "100%",
         boxShadow: "0px 3px 3px #0000004A",
+        overflow: "hidden",
       }}
     >
-      <Box sx={{ display: "flex", gap: 1.5, width: "100%" }}>
+      <Box sx={{ display: "flex", gap: 1.5, width: "100%", padding: 5 }}>
         {packages.map((pkg, index) => (
           <Card
+            key={index}
             sx={{
-              backgroundColor: "#0056A2",
+              minWidth: "30%",
+              backgroundColor: "#3076B2",
               color: "white",
               borderRadius: "10px",
+              "&:hover": {
+                backgroundColor: "#0056A2",
+                transform: "scale(1.15)",
+                marginLeft: 3,
+                marginRight: 3,
+              },
             }}
           >
             <CardContent>
@@ -95,6 +105,9 @@ const BroadbandPrepaidMainPackages: React.FC = () => {
                     border: "3px solid white",
                     padding: 2,
                     borderRadius: 3,
+                    "&:hover": {
+                      backgroundColor: "#3076B2",
+                    },
                   }}
                 >
                   <Typography
@@ -126,6 +139,10 @@ const BroadbandPrepaidMainPackages: React.FC = () => {
                     borderRadius: "10px",
                     width: "55%",
                     py: 1.5,
+                    "&:hover": {
+                      backgroundColor: "#4FD745",
+                      color: "white",
+                    },
                   }}
                   fullWidth
                   onClick={() => setPressedButton(index)}
