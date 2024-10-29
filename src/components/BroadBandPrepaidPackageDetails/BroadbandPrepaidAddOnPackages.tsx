@@ -6,9 +6,9 @@ import {
   CircularProgress,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState, useRef } from "react";
-import { BroadbandPrepaidAddOnPackageDetails } from "../../types/types";
+import React, { useEffect, useRef, useState } from "react";
 import { fetchLTEPrepaidAddOnPackages } from "../../services/fetchLTEPrepaidAddOnPackages";
+import { BroadbandPrepaidAddOnPackageDetails } from "../../types/types";
 
 const BroadbandPrepaidAddOnPackages: React.FC = () => {
   const [packages, setPackages] = useState<
@@ -31,7 +31,7 @@ const BroadbandPrepaidAddOnPackages: React.FC = () => {
         const data = await fetchLTEPrepaidAddOnPackages();
         setPackages(data);
       } catch (error) {
-        setError(`Failed to fetch packages ${error}`);
+        setError(`Failed to fetch packages: ${error}`);
       } finally {
         setLoading(false);
       }
@@ -80,7 +80,7 @@ const BroadbandPrepaidAddOnPackages: React.FC = () => {
   }
 
   if (error) {
-    console.log(`${error}`);
+    console.log(error);
   }
 
   return (
@@ -111,6 +111,7 @@ const BroadbandPrepaidAddOnPackages: React.FC = () => {
           gap: 1.5,
           overflowX: "auto",
           width: "100%",
+          padding: 5,
           cursor: isDragging ? "grabbing" : "grab",
           "&::-webkit-scrollbar": { display: "none" },
           userSelect: "none",
@@ -121,9 +122,15 @@ const BroadbandPrepaidAddOnPackages: React.FC = () => {
             key={pkg.OFFERING_ID}
             sx={{
               minWidth: "30%",
-              backgroundColor: "#0056A2",
+              backgroundColor: "#3076B2",
               color: "white",
               borderRadius: "10px",
+              "&:hover": {
+                backgroundColor: "#0056A2",
+                transform: "scale(1.15)",
+                marginLeft: 3,
+                marginRight: 3,
+              },
             }}
           >
             <CardContent>
@@ -152,6 +159,9 @@ const BroadbandPrepaidAddOnPackages: React.FC = () => {
                     border: "3px solid white",
                     padding: 2,
                     borderRadius: 3,
+                    "&:hover": {
+                      backgroundColor: "#3076B2",
+                    },
                   }}
                 >
                   <Typography
@@ -186,6 +196,10 @@ const BroadbandPrepaidAddOnPackages: React.FC = () => {
                     borderRadius: "10px",
                     width: "55%",
                     py: 1.5,
+                    "&:hover": {
+                      backgroundColor: "#4FD745",
+                      color: "white",
+                    },
                   }}
                   onClick={() => handleButtonPress(index)}
                   fullWidth
@@ -198,7 +212,7 @@ const BroadbandPrepaidAddOnPackages: React.FC = () => {
                       fontWeight: "600",
                     }}
                   >
-                    {pressedButtons.includes(index)? "Activated" : "Activate"}
+                    {pressedButtons.includes(index) ? "Activated" : "Activate"}
                   </Typography>
                 </Button>
               </Box>
