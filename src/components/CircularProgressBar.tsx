@@ -40,7 +40,7 @@ const CircularProgressBar = ({ percentage }: CircularProgressBarProps) => {
             outerRadius: 125, // Outer radius of the pie chart
             paddingAngle: 0, // Angle between slices
             cornerRadius: 0, // Corner radius for slices
-            startAngle: 0, // Start angle for the chart
+            startAngle: -0.5, // Start angle for the chart
             endAngle: 360, // End angle for the chart
             cx: 150, // Center X position
             cy: 120, // Center Y position

@@ -1,10 +1,14 @@
 // src/components/BroadbandSection.js
 import { Box, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import fetchDataBalance from "../services/fetchDataBalance";
 import useStore from "../services/useAppStore";
+import { DataBalance } from "../types/types";
 import BroadbandPrepaidPackages from "./BroadBandPrepaidPackageDetails/BroadbandPrepaidAddOnPackages";
 import BroadbandPrepaidMainPackages from "./BroadBandPrepaidPackageDetails/BroadbandPrepaidMainPackages";
 import BroadbandDetailsPostPaid from "./BroadbandDetailsPostPaid";
 import BroadbandDetailsPrePaid from "./BroadbandDetailsPrePaid";
+import BroadbandDetailsPrepaidAddons from "./BroadbandDetailsPrepaidAddons";
 import MenuLeft from "./MenuLeft";
 
 const UnderConstruction = () => {
@@ -16,7 +20,33 @@ const UnderConstruction = () => {
 };
 
 const BroadbandSection = () => {
-  const { selectedLeftMenuItem } = useStore();
+  const [addOnData, setAddOnData] = useState<DataBalance[]>([]);
+  const [mainData, setMainData] = useState<DataBalance[]>([]);
+  const { selectedLeftMenuItem, selectedTelephone } = useStore();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchDataBalance(selectedTelephone);
+      console.log(data);
+
+      const { addOnData, mainData } = data!.reduce(
+        (acc, item) => {
+          if (item.packageCategory === "Add-ons") {
+            acc.addOnData.push(item);
+          } else {
+            acc.mainData.push(item);
+          }
+          return acc;
+        },
+        { addOnData: [], mainData: [] } as { addOnData: DataBalance[]; mainData: DataBalance[] }
+      );
+
+      setAddOnData(addOnData);
+      setMainData(mainData);
+    };
+
+    fetchData();
+  }, [selectedTelephone]);
   return (
     <Box sx={{ display: "flex", gap: 1, width: "100%",flexGrow:1 }}>
       <Box sx={{ width: "25%", }}>
@@ -30,8 +60,8 @@ const BroadbandSection = () => {
         {selectedLeftMenuItem === "Redeem Data" && <UnderConstruction />}
         {selectedLeftMenuItem === "Happy Day" && <UnderConstruction />}
 
-        {selectedLeftMenuItem === "Main Packages" && <BroadbandDetailsPrePaid />}
-        {selectedLeftMenuItem === "Data Add-Ons" && <UnderConstruction />}
+        {selectedLeftMenuItem === "Main Packages" && <BroadbandDetailsPrePaid dataBalance={mainData}/>}
+        {selectedLeftMenuItem === "Data Add-Ons" && <BroadbandDetailsPrepaidAddons dataBalance={addOnData}/>}
         {selectedLeftMenuItem === "BroadbandMainPackage" && <BroadbandPrepaidMainPackages />}
         {selectedLeftMenuItem === "BroadbandPrepaidPackage" && <BroadbandPrepaidPackages />}
       </Box>

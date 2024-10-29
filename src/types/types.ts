@@ -56,3 +56,12 @@ export interface BalanceDetail {
   originalType: string;
   originalId: string;
 }
+
+export interface DataBalance {
+  initialAmount: string;
+  currentAmount: string;
+  effectiveTime: string;
+  expireTime: string;
+  packageName: string;
+  packageCategory: string;
+}

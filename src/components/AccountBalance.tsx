@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import useStore from "../services/useAppStore";
 
 import fetchWalletDetail from "../services/fetchWalletDetails";
+import { parseTime } from "../services/helperFunctions";
 
 const AccountBalance: React.FC = () => {
   const { serviceDetails, selectedTelephone } = useStore();
@@ -13,17 +14,6 @@ const AccountBalance: React.FC = () => {
   const isPrepaid =
     serviceDetails?.promotionType === "Prepaid" ||
     serviceDetails?.promotionType === null;
-
-  const parseExpireTime = (expireTime: string) => {
-    if (expireTime) {
-      const year = expireTime.slice(0, 4);
-      const month = parseInt(expireTime.slice(4, 6), 10) - 1;
-      const day = expireTime.slice(6, 8);
-
-      return new Date(Date.UTC(+year, month, +day));
-    }
-    return null;
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +25,7 @@ const AccountBalance: React.FC = () => {
       });
       setAmount(formattedAmount);
 
-      const formattedTime = parseExpireTime(walletDetails!.expireTime);
+      const formattedTime = parseTime(walletDetails!.expireTime);
       const formattedExpireDate = formattedTime
         ? formattedTime.toLocaleDateString("en-GB", {
             year: "numeric",
