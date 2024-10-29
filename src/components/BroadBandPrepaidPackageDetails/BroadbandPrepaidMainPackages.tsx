@@ -55,14 +55,14 @@ const BroadbandPrepaidMainPackages: React.FC = () => {
         alignItems: "center",
         backgroundColor: "#FFFFFF",
         color: "#FFFFFF1A",
-        padding: 1.5,
+        padding: 2,
         borderRadius: "10px",
         height: "100%",
         boxShadow: "0px 3px 3px #0000004A",
         overflow: "hidden",
       }}
     >
-      <Box sx={{ display: "flex", gap: 1.5, width: "100%", padding: 5 }}>
+      <Box sx={{ display: "flex", gap: 1.5, width: "100%", padding: 2 }}>
         {packages.map((pkg, index) => (
           <Card
             key={index}
@@ -71,11 +71,12 @@ const BroadbandPrepaidMainPackages: React.FC = () => {
               backgroundColor: "#3076B2",
               color: "white",
               borderRadius: "10px",
+              transition: "transform 0.3s, margin 0.3s ease-in-out",
               "&:hover": {
                 backgroundColor: "#0056A2",
                 transform: "scale(1.15)",
-                marginLeft: 3,
-                marginRight: 3,
+                marginLeft: 2,
+                marginRight: 2,
               },
             }}
           >

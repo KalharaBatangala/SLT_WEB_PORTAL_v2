@@ -111,7 +111,7 @@ const BroadbandPrepaidAddOnPackages: React.FC = () => {
           gap: 1.5,
           overflowX: "auto",
           width: "100%",
-          padding: 5,
+          padding: 2,
           cursor: isDragging ? "grabbing" : "grab",
           "&::-webkit-scrollbar": { display: "none" },
           userSelect: "none",
@@ -125,11 +125,12 @@ const BroadbandPrepaidAddOnPackages: React.FC = () => {
               backgroundColor: "#3076B2",
               color: "white",
               borderRadius: "10px",
+              transition: "transform 0.3s, margin 0.3s ease-in-out",
               "&:hover": {
                 backgroundColor: "#0056A2",
-                transform: "scale(1.15)",
-                marginLeft: 3,
-                marginRight: 3,
+                transform: "scale(1.05)",
+                marginLeft: 2,
+                marginRight: 2,
               },
             }}
           >
@@ -146,7 +147,7 @@ const BroadbandPrepaidAddOnPackages: React.FC = () => {
                   sx={{
                     mb: 2,
                     textAlign: "center",
-                    fontSize: "1.10em",
+                    fontSize: "1.10rem",
                     fontWeight: "bold",
                   }}
                 >
@@ -165,7 +166,7 @@ const BroadbandPrepaidAddOnPackages: React.FC = () => {
                   }}
                 >
                   <Typography
-                    sx={{ margin: "auto", fontSize: "2em" }}
+                    sx={{ margin: "auto", fontSize: "2rem" }}
                     variant="body2"
                   >
                     <strong>{pkg.DATA_VOLUME_GB}GB</strong>
@@ -173,7 +174,7 @@ const BroadbandPrepaidAddOnPackages: React.FC = () => {
                 </Box>
                 <Typography
                   variant="body2"
-                  sx={{ mt: 1, fontSize: "1.5em", fontWeight: "bold" }}
+                  sx={{ mt: 1, fontSize: "1.5rem", fontWeight: "bold" }}
                 >
                   Rs.{pkg.PRICE_LKR_WITH_TAX} /-
                 </Typography>
@@ -208,7 +209,7 @@ const BroadbandPrepaidAddOnPackages: React.FC = () => {
                     variant="body2"
                     sx={{
                       textTransform: "capitalize",
-                      fontSize: "1.25em",
+                      fontSize: "1.25rem",
                       fontWeight: "600",
                     }}
                   >
