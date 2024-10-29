@@ -1,10 +1,11 @@
 import { Box, Button, Typography } from "@mui/material";
-import React from "react";
+import { useEffect, useState } from "react";
 import WatermarkLogo from "../assets/Images/watermarklogo.png";
-import CircularProgressBar from "./CircularProgressBar";
-import useStore from "../services/useAppStore";
-import { DataBalance } from "../types/types";
+import fetchServiceDetailByTelephone from "../services/fetchServiceDetails";
 import { parseTime } from "../services/helperFunctions";
+import useStore from "../services/useAppStore";
+import { DataBalance, ServiceDetailsAPIResponse } from "../types/types";
+import CircularProgressBar from "./CircularProgressBar";
 
 const commonTextStyle = {
   fontSize: "14px",
@@ -56,7 +57,6 @@ const ActionButton = ({
       color: variant === "contained" ? "#ffffff" : "#0056A2",
       marginY: variant === "contained" ? 0 : 3,
       padding: variant === "contained" ? 1 : 2.5,
-
       "&:hover": {
         backgroundColor: variant === "contained" ? "#004b8c" : "#e0f7fa",
         border: variant === "outlined" ? "3px solid #004b8c" : "none",
@@ -84,19 +84,38 @@ const BroadbandDetailsPrepaidTemplate = ({
   dataBalance,
   isMain,
 }: BroadbandDetailsPrepaidTemplateProps) => {
-  const { setLeftMenuItem } = useStore();
+  const { setLeftMenuItem, selectedTelephone } = useStore();
+  const [serviceDetails, setServiceDetails] = useState<ServiceDetailsAPIResponse | null>(null);
+
+  useEffect(() => {
+    if (selectedTelephone) {
+      const fetchDetails = async () => {
+        const details = await fetchServiceDetailByTelephone(selectedTelephone);
+        setServiceDetails(details);
+      };
+      fetchDetails();
+    }
+  }, [selectedTelephone]);
+
   const percentage =
-    (parseFloat(dataBalance[0]?.currentAmount) /
-      parseFloat(dataBalance[0]?.currentAmount)) *
-    100;
-  const initialAmount = parseFloat(dataBalance[0]?.initialAmount);
-  const currentAmount = parseFloat(dataBalance[0]?.currentAmount);
-  const expireTime = parseTime(dataBalance[0]?.expireTime);
-  const formattedeExpireTime = expireTime?.toLocaleDateString("en-US", {
+    dataBalance.length > 0
+      ? (parseFloat(dataBalance[0]?.currentAmount) /
+          parseFloat(dataBalance[0]?.initialAmount)) * 100
+      : 0;
+
+  const initialAmount = dataBalance.length > 0 ? parseFloat(dataBalance[0]?.initialAmount) : 0;
+  const currentAmount = dataBalance.length > 0 ? parseFloat(dataBalance[0]?.currentAmount) : 0;
+  const expireTime = dataBalance.length > 0 ? parseTime(dataBalance[0]?.expireTime) : null;
+  const formattedExpireTime = expireTime?.toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
     day: "2-digit",
   });
+
+  // Use optional chaining to avoid accessing properties on null
+  const serviceID = serviceDetails?.listofBBService[0]?.serviceID || "Loading...";
+  const serviceStatus = serviceDetails?.listofBBService[0]?.serviceStatus || "Loading...";
+
   return (
     <Box
       sx={{
@@ -140,14 +159,14 @@ const BroadbandDetailsPrepaidTemplate = ({
                 sx={{ fontSize: 20, fontWeight: 700, color: "#0F3B7A" }}
               >
                 {`${
-                  currentAmount - initialAmount
+                  initialAmount - currentAmount
                 } GB USED OF ${initialAmount} GB`}
               </Typography>
               <Typography
                 variant="body2"
                 sx={{ fontSize: 16, fontWeight: 500, color: "#0F3B7A" }}
               >
-                {`Valid Till : ${formattedeExpireTime}`}
+                {`Valid Till: ${formattedExpireTime}`}
               </Typography>
             </>
           ) : (
@@ -157,7 +176,7 @@ const BroadbandDetailsPrepaidTemplate = ({
                 justifyContent: "center",
                 alignItems: "center",
                 height: "100%",
-                flexgrow: 1,
+                flexGrow: 1,
               }}
             >
               <Typography
@@ -193,8 +212,8 @@ const BroadbandDetailsPrepaidTemplate = ({
               gap: 1,
             }}
           >
-            <CustomSection label="Status" value="Active" />
-            <CustomSection label="Username" value="12345613213" />
+            <CustomSection label="Status" value={serviceStatus} />
+            <CustomSection label="Username" value={serviceID} />
           </Box>
           <Box
             sx={{
@@ -203,7 +222,6 @@ const BroadbandDetailsPrepaidTemplate = ({
               backgroundColor: "#B3EDFF8A",
               borderRadius: "10px",
               paddingY: 3,
-
               gap: 1,
             }}
           >
@@ -241,9 +259,8 @@ const BroadbandDetailsPrepaidTemplate = ({
           <Box
             sx={{ position: "absolute", zIndex: 1, right: "1%", bottom: "1%" }}
           >
-            <img src={WatermarkLogo} />
+            <img src={WatermarkLogo} alt="Watermark Logo" />
           </Box>
-          <Box></Box>
         </Box>
       </Box>
     </Box>
