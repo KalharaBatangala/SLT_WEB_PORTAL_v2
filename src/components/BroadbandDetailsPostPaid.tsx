@@ -1,8 +1,11 @@
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import WatermarkLogo from "../assets/Images/watermarklogo.png";
+import fetchServiceDetailByTelephone from "../services/fetchServiceDetails";
+import useStore from "../services/useAppStore";
+import { ServiceDetailsAPIResponse } from "../types/types";
 import CircularProgressBar from "./CircularProgressBar";
 
 const commonTextStyle = {
@@ -29,7 +32,7 @@ const CustomSection = ({ label, value }: CustomSectionProps) => (
       variant="body2"
       sx={{ fontSize: "12px", fontWeight: 500, color: "#0056A2" }}
     >
-      {` ${value}`}
+      {value}
     </Typography>
   </Typography>
 );
@@ -51,7 +54,6 @@ const ActionButton = ({ text, variant = "outlined", onClick }: ActionButtonProps
       color: variant === "contained" ? "#ffffff" : "#0056A2",
       marginY: variant === "contained" ? 0 : 3,
       padding: variant === "contained" ? 1 : 2.5,
-
       "&:hover": {
         backgroundColor: variant === "contained" ? "#004b8c" : "#e0f7fa",
         border: variant === "outlined" ? "3px solid #004b8c" : "none",
@@ -60,16 +62,11 @@ const ActionButton = ({ text, variant = "outlined", onClick }: ActionButtonProps
     }}
     onClick={onClick}
   >
-    <Typography
-      variant="body2"
-      textTransform="capitalize"
-      sx={{ fontWeight: "bold", fontSize: 16 }}
-    >
+    <Typography variant="body2" textTransform="capitalize" sx={{ fontWeight: "bold", fontSize: 16 }}>
       {text}
     </Typography>
   </Button>
 );
-
 
 const BroadbandNavbar = () => {
   const items = [
@@ -145,10 +142,25 @@ const BroadbandNavbar = () => {
   )
 }
 
-
-
-
 const BroadbandDetailsPostPaid = () => {
+  const { selectedTelephone } = useStore();
+  const [serviceData, setServiceData] = useState<ServiceDetailsAPIResponse | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (selectedTelephone) {
+        const data = await fetchServiceDetailByTelephone(selectedTelephone);
+        setServiceData(data);
+      }
+    };
+    fetchData();
+  }, [selectedTelephone]);
+
+  // Set default values for loading state
+  const serviceID = serviceData?.listofBBService[0]?.serviceID || "Loading...";
+  const serviceStatus = serviceData?.listofBBService[0]?.serviceStatus || "Loading...";
+  const packageName = serviceData?.listofBBService[0]?.packageName || "Loading...";
+
   return (
     <Box
       sx={{
@@ -163,7 +175,7 @@ const BroadbandDetailsPostPaid = () => {
         boxShadow: "0px 3px 3px #0000004A",
       }}
     >
-      {<BroadbandNavbar />}
+         {<BroadbandNavbar />}
       <Box sx={{ height: "100%", display: "flex" }}>
         <Box
           sx={{
@@ -176,19 +188,19 @@ const BroadbandDetailsPostPaid = () => {
             gap: 1,
             padding: 2,
             border: "1px solid #0056A252",
-            borderRadius:"10px",
+            borderRadius: "10px",
           }}
         >
-            <Typography variant="body2" sx={{fontSize: 20, fontWeight: 700, color: "#0F3B7A"}}>
+          <Typography variant="body2" sx={{ fontSize: 20, fontWeight: 700, color: "#0F3B7A" }}>
             4G LTE - Home Broadband - 7 Days
-            </Typography>
+          </Typography>
           <CircularProgressBar percentage={75} />
-          <Typography variant="body2" sx={{fontSize: 20, fontWeight: 700, color: "#0F3B7A"}}>
-          0 GB USED OF 1 GB
-            </Typography>
-          <Typography variant="body2" sx={{fontSize: 16, fontWeight: 500, color: "#0F3B7A"}}>
-          (Valid Till : 09th Oct 2024)
-            </Typography>
+          <Typography variant="body2" sx={{ fontSize: 20, fontWeight: 700, color: "#0F3B7A" }}>
+            0 GB USED OF 1 GB
+          </Typography>
+          <Typography variant="body2" sx={{ fontSize: 16, fontWeight: 500, color: "#0F3B7A" }}>
+            (Valid Till : 09th Oct 2024)
+          </Typography>
         </Box>
         <Box
           sx={{
@@ -214,18 +226,17 @@ const BroadbandDetailsPostPaid = () => {
               gap: 1,
             }}
           >
-            <CustomSection label="Package" value="WEB FAMILY ACTIVE" />
-            <CustomSection label="Status" value="Active" />
-            <CustomSection label="Username" value="12345613213" />
+            <CustomSection label="Package" value={packageName} />
+            <CustomSection label="Status" value={serviceStatus} />
+            <CustomSection label="Username" value={serviceID} />
           </Box>
 
-          <ActionButton text="Package Upgrade" variant="outlined" onClick={()=>{}}/>
-          <ActionButton text="Get Extra GB" variant="contained" onClick={()=>{}}/>
-          <ActionButton text="Get Data Add-ons" variant="contained" onClick={()=>{}}/>
-          <Box sx={{position:"absolute",zIndex:1, right:"1%", bottom:"1%" }}>
-                <img src={WatermarkLogo}/>
-            </Box>
-          <Box></Box>
+          <ActionButton text="Package Upgrade" variant="outlined" onClick={() => {}} />
+          <ActionButton text="Get Extra GB" variant="contained" onClick={() => {}} />
+          <ActionButton text="Get Data Add-ons" variant="contained" onClick={() => {}} />
+          <Box sx={{ position: "absolute", zIndex: 1, right: "1%", bottom: "1%" }}>
+            <img src={WatermarkLogo} alt="Watermark Logo" />
+          </Box>
         </Box>
       </Box>
     </Box>
