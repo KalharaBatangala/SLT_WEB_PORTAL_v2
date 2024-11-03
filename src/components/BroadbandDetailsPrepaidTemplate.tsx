@@ -125,9 +125,9 @@ const BroadbandDetailsPrepaidTemplate = ({
     day: "2-digit",
   });
   const serviceID =
-    serviceDetails?.listofBBService[selectedIndex]?.serviceID || "Loading...";
+    serviceDetails?.listofBBService[0]?.serviceID || "Loading...";
   const serviceStatus =
-    serviceDetails?.listofBBService[selectedIndex]?.serviceStatus ||
+    serviceDetails?.listofBBService[0]?.serviceStatus ||
     "Loading...";
 
   return (
