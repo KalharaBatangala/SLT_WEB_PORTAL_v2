@@ -42,7 +42,9 @@ const BroadbandSection = () => {
       );
 
       setAddOnData(addOnData);
+      console.log("AddOnData:", addOnData);
       setMainData(mainData);
+      console.log("MainData:", mainData);
     };
 
     fetchData();

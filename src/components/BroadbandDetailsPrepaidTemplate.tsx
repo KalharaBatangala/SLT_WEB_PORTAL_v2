@@ -6,6 +6,7 @@ import { parseTime } from "../services/helperFunctions";
 import useStore from "../services/useAppStore";
 import { DataBalance, ServiceDetailsAPIResponse } from "../types/types";
 import CircularProgressBar from "./CircularProgressBar";
+import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 
 const commonTextStyle = {
   fontSize: "14px",
@@ -85,7 +86,9 @@ const BroadbandDetailsPrepaidTemplate = ({
   isMain,
 }: BroadbandDetailsPrepaidTemplateProps) => {
   const { setLeftMenuItem, selectedTelephone } = useStore();
-  const [serviceDetails, setServiceDetails] = useState<ServiceDetailsAPIResponse | null>(null);
+  const [serviceDetails, setServiceDetails] =
+    useState<ServiceDetailsAPIResponse | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
     if (selectedTelephone) {
@@ -99,22 +102,33 @@ const BroadbandDetailsPrepaidTemplate = ({
 
   const percentage =
     dataBalance.length > 0
-      ? (parseFloat(dataBalance[0]?.currentAmount) /
-          parseFloat(dataBalance[0]?.initialAmount)) * 100
+      ? (parseFloat(dataBalance[selectedIndex]?.currentAmount) /
+          parseFloat(dataBalance[selectedIndex]?.initialAmount)) *
+        100
       : 0;
 
-  const initialAmount = dataBalance.length > 0 ? parseFloat(dataBalance[0]?.initialAmount) : 0;
-  const currentAmount = dataBalance.length > 0 ? parseFloat(dataBalance[0]?.currentAmount) : 0;
-  const expireTime = dataBalance.length > 0 ? parseTime(dataBalance[0]?.expireTime) : null;
+  const initialAmount =
+    dataBalance.length > 0
+      ? parseFloat(dataBalance[selectedIndex]?.initialAmount)
+      : 0;
+  const currentAmount =
+    dataBalance.length > 0
+      ? parseFloat(dataBalance[selectedIndex]?.currentAmount)
+      : 0;
+  const expireTime =
+    dataBalance.length > 0
+      ? parseTime(dataBalance[selectedIndex]?.expireTime)
+      : null;
   const formattedExpireTime = expireTime?.toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
     day: "2-digit",
   });
-
-  // Use optional chaining to avoid accessing properties on null
-  const serviceID = serviceDetails?.listofBBService[0]?.serviceID || "Loading...";
-  const serviceStatus = serviceDetails?.listofBBService[0]?.serviceStatus || "Loading...";
+  const serviceID =
+    serviceDetails?.listofBBService[selectedIndex]?.serviceID || "Loading...";
+  const serviceStatus =
+    serviceDetails?.listofBBService[selectedIndex]?.serviceStatus ||
+    "Loading...";
 
   return (
     <Box
@@ -126,7 +140,7 @@ const BroadbandDetailsPrepaidTemplate = ({
         color: "#FFFFFF1A",
         padding: 1,
         borderRadius: "10px",
-        height: "100%",
+        height: "60vh",
         boxShadow: "0px 3px 3px #0000004A",
       }}
     >
@@ -151,9 +165,35 @@ const BroadbandDetailsPrepaidTemplate = ({
                 variant="body2"
                 sx={{ fontSize: 20, fontWeight: 700, color: "#0F3B7A" }}
               >
-                {dataBalance[0]?.packageName}
+                {dataBalance[selectedIndex]?.packageName}
               </Typography>
-              <CircularProgressBar percentage={percentage} />
+              <Box
+                sx={{
+                  display: "Flex",
+                  gap:3,
+                  justifyContent: "center",
+                  alignItems: "Center",
+                }}
+              >
+                <ArrowBackIos
+                  sx={{ color: selectedIndex === 0 ? "gray" : "#0056A2" }}
+                  onClick={() => {
+                    if (selectedIndex > 0) {
+                      setSelectedIndex(selectedIndex - 1);
+                    }
+                  }}
+                />
+                <CircularProgressBar percentage={percentage} />
+                <ArrowForwardIos
+                  sx={{ color: selectedIndex === dataBalance.length-1 ? "gray" : "#0056A2" }}
+                  onClick={() => {
+                    if (selectedIndex < dataBalance.length - 1) {
+                      setSelectedIndex(selectedIndex + 1);
+                    }
+                  }}
+                />
+              </Box>
+              <Box>
               <Typography
                 variant="body2"
                 sx={{ fontSize: 20, fontWeight: 700, color: "#0F3B7A" }}
@@ -168,6 +208,7 @@ const BroadbandDetailsPrepaidTemplate = ({
               >
                 {`Valid Till: ${formattedExpireTime}`}
               </Typography>
+              </Box>
             </>
           ) : (
             <Box
