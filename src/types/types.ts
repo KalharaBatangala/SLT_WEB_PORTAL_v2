@@ -13,6 +13,9 @@ export interface Service {
 }
 
 export interface ServiceDetailsAPIResponse {
+  errorMessage: string;
+  isSuccess: ServiceDetailsAPIResponse | null;
+  dataBundle: any;
   accountCategory: string;
   accountNo: string;
   contactMobile: string;
@@ -64,4 +67,33 @@ export interface DataBalance {
   expireTime: string;
   packageName: string;
   packageCategory: string;
+}
+
+export interface dataBundle {
+  id: string;
+    subscriberNo: string;
+    txnId: string;
+    txnAmount: string;
+    txnTime: string; // Original format: YYYYMMDDHHMMSS
+    statusCode: string;
+}
+
+export interface BillingInquiry {
+  billAmount: string;
+  lastBillDate: string;
+  paymentDueDate: string;
+  lastPaymentDate: string;
+  lastPaymentAmount: string;
+  outstandingBalance: string;
+}
+
+export interface BillPaymentAPIResponse {
+  isSuccess: boolean;
+  errorMessage: string | null;
+  exceptionDetail: string | null;
+  dataBundle: {
+    listofbillingInquiryType: BillingInquiry[];
+  };
+  errorShow: string | null;
+  errorCode: string | null;
 }
