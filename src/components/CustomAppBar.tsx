@@ -1,10 +1,10 @@
 import { AppBar, Avatar, Box, Container, FormControl, IconButton, MenuItem, Select, SelectChangeEvent, Toolbar } from "@mui/material";
 import { useEffect, useState } from "react";
-import userImage from "../../src/assets/Images/user-profile.png";
-import { AccountDetails } from "../types/types";
+import iconDownArrow from "../../src/assets/Images/icondownarrow.png";
+import userImage from "../../src/assets/Images/profile.png";
 import fetchAccountDetails from "../services/fetchAccountDetails";
 import useStore from "../services/useAppStore";
-import iconDownArrow from "../../src/assets/Images/icondownarrow.png";
+import { AccountDetails } from "../types/types";
 
 
 const CustomAppBar = () => {
