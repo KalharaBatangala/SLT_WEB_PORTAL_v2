@@ -1,7 +1,7 @@
 import { AppBar, Avatar, Box, Container, FormControl, IconButton, MenuItem, Select, SelectChangeEvent, Toolbar } from "@mui/material";
 import { useEffect, useState } from "react";
 import iconDownArrow from "../../src/assets/Images/icondownarrow.png";
-import userImage from "../../src/assets/Images/profile.png";
+import userImage from "../../src/assets/Images/profile.jpg";
 import fetchAccountDetails from "../services/fetchAccountDetails";
 import useStore from "../services/useAppStore";
 import { AccountDetails } from "../types/types";
@@ -72,7 +72,7 @@ const CustomAppBar = () => {
           <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "end", alignItems: "center" }}>
             <FormControl
               sx={{
-                mr: 4,
+                mr: 3,
                 width: "14vw",
                 minWidth: "200px",
                 color: "#00256A",
@@ -126,8 +126,8 @@ const CustomAppBar = () => {
                 )}
               </Select>
             </FormControl>
-            <IconButton sx={{ p: 0 }}>
-              <Avatar sx={{ height: "50px", width: "auto" }} alt="User Avatar" src={userImage} />
+            <IconButton sx={{ p: 0,mb:0.5 }}>
+              <Avatar sx={{ height: "45px", width: "auto" }} alt="User Avatar" src={userImage} />
             </IconButton>
           </Box>
         </Toolbar>
