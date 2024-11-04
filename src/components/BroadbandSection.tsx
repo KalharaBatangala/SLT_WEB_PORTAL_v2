@@ -10,6 +10,7 @@ import BroadbandDetailsPrePaid from "./BroadbandDetailsPrePaid";
 import BroadbandDetailsPrepaidAddons from "./BroadbandDetailsPrepaidAddons";
 import MenuLeft from "./MenuLeft";
 import TransactionsHistory from "./TransactionsHistory";
+import BroadbandPrepaidAddOnPackages from "./BroadBandPrepaidPackageDetails/BroadbandPrepaidAddOnPackages";
 
 const UnderConstruction = () => {
     return(
@@ -65,6 +66,7 @@ const BroadbandSection = () => {
         {selectedLeftMenuItem === "Main Packages" && <BroadbandDetailsPrePaid dataBalance={mainData}/>}
         {selectedLeftMenuItem === "Data Add-Ons" && <BroadbandDetailsPrepaidAddons dataBalance={addOnData}/>}
         {selectedLeftMenuItem === "BroadbandMainPackage" && <BroadbandPrepaidMainPackages />}
+        {selectedLeftMenuItem === "BroadbandPrepaidPackage" && <BroadbandPrepaidAddOnPackages />}
         {selectedLeftMenuItem === "Transaction" && <TransactionsHistory serviceId={selectedTelephone} />}
       </Box>
     </Box>
