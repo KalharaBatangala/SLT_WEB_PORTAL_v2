@@ -163,7 +163,7 @@ const BroadbandDetailsPrepaidTemplate = ({
             <>
               <Typography
                 variant="body2"
-                sx={{ fontSize: 20, fontWeight: 700, color: "#0F3B7A" }}
+                sx={{ fontSize: 20,textAlign:"center", fontWeight: 700, color: "#0F3B7A" }}
               >
                 {dataBalance[selectedIndex]?.packageName}
               </Typography>
