@@ -3,13 +3,12 @@ import { AccountDetails } from "../types/types";
 
 const fetchAccountDetails = async () => {
     const token = localStorage.getItem("accessToken");
-    console.log("Access Token:", token);
     if (!token) {
       console.error("Access token not found");
       return;
     }
 
-    console.log("Access Token:", token); 
+    //console.log("Access Token:", token); 
 
     try {
       const response = await axios.get(
@@ -21,7 +20,7 @@ const fetchAccountDetails = async () => {
         }
       );
 
-      console.log("Full API Response:", response.data); 
+      //console.log("Full API Response:", response.data); 
 
      
       if (response.data && response.data.dataBundle) {

@@ -15,7 +15,6 @@ export interface Service {
 export interface ServiceDetailsAPIResponse {
   errorMessage: string;
   isSuccess: ServiceDetailsAPIResponse | null;
-  dataBundle: any;
   accountCategory: string;
   accountNo: string;
   contactMobile: string;
@@ -29,6 +28,7 @@ export interface ServiceDetailsAPIResponse {
 
 export interface BroadbandPrepaidMainPackageDetails {
   OFFERING_ID: string;
+  OFFERING_NAME: string;
   MYSLT_PKG_NAME: string;
   PRICE_LKR_WITH_TAX: number;
   DATA_VOLUME_GB?: string;
@@ -37,6 +37,7 @@ export interface BroadbandPrepaidMainPackageDetails {
 
 export interface BroadbandPrepaidAddOnPackageDetails {
   OFFERING_ID: string;
+  OFFERING_NAME: string;
   ADDON_NAME: string;
   PRICE_LKR_WITH_TAX: number;
   DATA_VOLUME_GB?: string;
@@ -69,7 +70,7 @@ export interface DataBalance {
   packageCategory: string;
 }
 
-export interface dataBundle {
+export interface Transaction {
   id: string;
     subscriberNo: string;
     txnId: string;

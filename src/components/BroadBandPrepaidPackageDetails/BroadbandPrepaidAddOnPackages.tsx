@@ -4,22 +4,32 @@ import {
   Card,
   CardContent,
   CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { fetchLTEPrepaidAddOnPackages } from "../../services/fetchLTEPrepaidAddOnPackages";
 import { BroadbandPrepaidAddOnPackageDetails } from "../../types/types";
+import addBroadbandPackage from "../../services/addBroadbandPackage";
+import useStore from "../../services/useAppStore";
 
 const BroadbandPrepaidAddOnPackages: React.FC = () => {
+  const { selectedTelephone,setLeftMenuItem,setPackageListUpdate } = useStore();
   const [packages, setPackages] = useState<
     BroadbandPrepaidAddOnPackageDetails[]
   >([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
-
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedPackageIndex, setSelectedPackageIndex] = useState<
+    number | null
+  >(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [pressedButtons, setPressedButtons] = useState<number[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -41,9 +51,18 @@ const BroadbandPrepaidAddOnPackages: React.FC = () => {
   }, []);
 
   const handleButtonPress = (index: number) => {
-    setPressedButtons((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
-    );
+    setSelectedPackageIndex(index);
+    setDialogOpen(true);
+  };
+
+  const handleConfirmActivation = async () => {
+    const telephoneNo = selectedTelephone.toString();
+    const offeringId = packages[selectedPackageIndex!]?.OFFERING_ID;
+    const pkgName = packages[selectedPackageIndex!]?.OFFERING_NAME;
+    await addBroadbandPackage(telephoneNo,offeringId,pkgName);
+    setPackageListUpdate();
+    setDialogOpen(false);
+    setLeftMenuItem("Data Add-Ons");
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -188,12 +207,8 @@ const BroadbandPrepaidAddOnPackages: React.FC = () => {
                   variant="contained"
                   sx={{
                     mt: 2,
-                    backgroundColor: pressedButtons.includes(index)
-                      ? "#50B748"
-                      : "#FFFFFF",
-                    color: pressedButtons.includes(index)
-                      ? "#FFFFFF"
-                      : "#50B748",
+                    backgroundColor: "#FFFFFF",
+                    color: "#50B748",
                     borderRadius: "10px",
                     width: "55%",
                     py: 1.5,
@@ -213,7 +228,7 @@ const BroadbandPrepaidAddOnPackages: React.FC = () => {
                       fontWeight: "600",
                     }}
                   >
-                    {pressedButtons.includes(index) ? "Activated" : "Activate"}
+                    Activate
                   </Typography>
                 </Button>
               </Box>
@@ -244,6 +259,44 @@ const BroadbandPrepaidAddOnPackages: React.FC = () => {
           />
         ))}
       </Box>
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+        <DialogTitle>
+        <Typography variant="body2" fontSize={23}>
+          Confirm Activation
+          </Typography>
+          </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+          <Typography variant="body2">
+            Are you sure you want to activate the{" "}
+            {selectedPackageIndex !== null &&
+              packages[selectedPackageIndex]?.ADDON_NAME}{" "}
+            package?
+            </Typography>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            sx={{
+              backgroundColor: "#0056A2",
+              color: "#FFFFFF",
+            }}
+            onClick={() => setDialogOpen(false)}
+          >
+            <Typography variant="body2">Cancel</Typography>
+          </Button>
+          <Button
+            sx={{
+              backgroundColor: "#0056A2",
+              color: "#FFFFFF",
+            }}
+            onClick={handleConfirmActivation}
+            autoFocus
+          >
+            <Typography variant="body2">Confirm</Typography>
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

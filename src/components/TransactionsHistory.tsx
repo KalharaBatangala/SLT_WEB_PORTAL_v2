@@ -12,7 +12,7 @@ import {
 import React, { useEffect, useState } from "react";
 import fetchTransactionHistory from "../services/fetchTransactionHistory";
 import { parseTime } from "../services/helperFunctions";
-import { dataBundle } from "../types/types";
+import { Transaction } from "../types/types";
 
 interface TransactionsHistoryProps {
 serviceId: string;
@@ -29,7 +29,7 @@ return date ? date.toISOString().slice(11, 19) : ""; // Format as HH:MM:SS
 };
 
 const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({ serviceId }) => { 
-const [transactions, setTransactions] = useState<dataBundle[]>([]);
+const [transactions, setTransactions] = useState<Transaction[]>([]);
 const [error, setError] = useState<string | null>(null);
 
 const toDate = new Date();
@@ -49,7 +49,7 @@ const formattedToDate = formatDate(toDate);
 useEffect(() => {
   const fetchTransactions = async () => {
     try {
-      const data: dataBundle[] | null = await fetchTransactionHistory(
+      const data: Transaction[] | null = await fetchTransactionHistory(
         serviceId,
         formattedFromDate,
         formattedToDate
