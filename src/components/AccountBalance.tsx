@@ -1,7 +1,6 @@
 import { Button, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import fetchWalletDetail from "../services/fetchWalletDetails";
 import { parseTime } from "../services/helperFunctions"; // Adjust the import path as needed
 import fetchBillingDetails from "../services/postpaid/fetchBillingDetails"; // Import your billing fetch function
@@ -12,8 +11,6 @@ const AccountBalance: React.FC = () => {
   const [amount, setAmount] = useState("");
   const [expireTime, setExpireTime] = useState(""); // State for expire time
   const [billingAmount, setBillingAmount] = useState<string | null>(null); // State for billing amount
-  const navigate = useNavigate();
-
   const isPrepaid =
     serviceDetails?.promotionType === "Prepaid" ||
     serviceDetails?.promotionType === null;

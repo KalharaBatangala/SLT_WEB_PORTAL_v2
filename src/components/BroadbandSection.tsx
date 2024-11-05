@@ -23,12 +23,12 @@ const UnderConstruction = () => {
 const BroadbandSection = () => {
   const [addOnData, setAddOnData] = useState<DataBalance[]>([]);
   const [mainData, setMainData] = useState<DataBalance[]>([]);
-  const { selectedLeftMenuItem, selectedTelephone } = useStore();
+  const { selectedLeftMenuItem, selectedTelephone,packageListUpdate } = useStore();
 
   useEffect(() => {
     const fetchData = async () => {
+      await new Promise(resolve => setTimeout(resolve, 1000));
       const data = await fetchDataBalance(selectedTelephone);
-      console.log(data);
 
       const { addOnData, mainData } = data!.reduce(
         (acc, item) => {
@@ -42,14 +42,12 @@ const BroadbandSection = () => {
         { addOnData: [], mainData: [] } as { addOnData: DataBalance[]; mainData: DataBalance[] }
       );
 
-      setAddOnData(addOnData);
-      console.log("AddOnData:", addOnData);
+      setAddOnData(addOnData)
       setMainData(mainData);
-      console.log("MainData:", mainData);
     };
 
     fetchData();
-  }, [selectedTelephone]);
+  }, [selectedTelephone,packageListUpdate]);
   return (
     <Box sx={{ display: "flex", gap: 1, width: "100%",flexGrow:1 }}>
       <Box sx={{ width: "25%", }}>

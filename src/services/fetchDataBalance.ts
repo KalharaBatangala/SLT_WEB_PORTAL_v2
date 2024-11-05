@@ -9,9 +9,12 @@ const fetchDataBalance = async (serviceId: string) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      //console.log(`Data Detail`, JSON.stringify(response.data, null, 2));
+      console.log(`Data Detail`, JSON.stringify(response.data, null, 2));
       if (response.data.isSuccess) {
         const dataBalanceDetails: DataBalance[] = response.data.dataBundle["listofFreeUnit"];
+        dataBalanceDetails.sort((a, b) => {
+          return parseInt(b.effectiveTime) - parseInt(a.effectiveTime);
+        });
         return dataBalanceDetails;
       } else {
         console.error("Failed to fetch data balance details");
