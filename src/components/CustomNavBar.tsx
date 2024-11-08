@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import useStore from "../services/useAppStore";
 
 const CustomNavBar = () => {
-  const { serviceDetails,setSelectedNavbarItem,selectedTelephone } = useStore();
+  const { serviceDetails,setSelectedNavbarItem,selectedTelephone,setLeftMenuItem } = useStore();
   const isPrepaid = serviceDetails?.promotionType === "Prepaid" || serviceDetails?.promotionType === null ;
   const [selectedItem, setSelectedItem] = useState("Broadband");
   const items = [
@@ -17,6 +17,7 @@ const CustomNavBar = () => {
   const handleItemClick = (item: string) => {
     setSelectedItem(item);
     setSelectedNavbarItem(item);
+    setLeftMenuItem("Summary")
   };
 
   const disabledItems = ["PeoTV","Mobile", "Voice"];
