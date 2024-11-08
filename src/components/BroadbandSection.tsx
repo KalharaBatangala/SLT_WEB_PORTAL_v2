@@ -11,6 +11,7 @@ import BroadbandDetailsPrepaidAddons from "./BroadbandDetailsPrepaidAddons";
 import MenuLeft from "./MenuLeft";
 import TransactionsHistory from "./TransactionsHistory";
 import BroadbandPrepaidAddOnPackages from "./BroadBandPrepaidPackageDetails/BroadbandPrepaidAddOnPackages";
+import Promotion from "./Promotion";
 
 const UnderConstruction = () => {
   return (
@@ -115,11 +116,12 @@ const BroadbandSection = () => {
         )}
 
         {selectedLeftMenuItem === "New Services" && <UnderConstruction />}
-        {selectedLeftMenuItem === "Promotion" && <UnderConstruction />}
+        {selectedLeftMenuItem === "Promotion" && <Promotion/>}
         {selectedLeftMenuItem === "Digital Life" && <UnderConstruction />}
         {selectedLeftMenuItem === "Bill" && <UnderConstruction />}
         {selectedLeftMenuItem === "Hot Devices" && <UnderConstruction />}
         {selectedLeftMenuItem === "Complaints" && <UnderConstruction />}
+
       </Box>
     </Box>
   );
