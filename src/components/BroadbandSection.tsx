@@ -13,21 +13,42 @@ import TransactionsHistory from "./TransactionsHistory";
 import BroadbandPrepaidAddOnPackages from "./BroadBandPrepaidPackageDetails/BroadbandPrepaidAddOnPackages";
 
 const UnderConstruction = () => {
-    return(
-        <Box sx={{display:"flex",justifyContent:"center",alignItems:"center",width:"100%",height:"450px",flexGrow:1,backgroundColor:"white",borderRadius:3}}>
-            <Typography variant="body2" sx={{color:"#0056A2",fontSize:24}}>Under Construction</Typography>
-        </Box>
-    );
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        height: "450px",
+        backgroundColor: "white",
+        borderRadius: 3,
+      }}
+    >
+      <Typography variant="body2" sx={{ color: "#0056A2", fontSize: 24 }}>
+        Under Construction
+      </Typography>
+    </Box>
+  );
 };
 
 const BroadbandSection = () => {
   const [addOnData, setAddOnData] = useState<DataBalance[]>([]);
   const [mainData, setMainData] = useState<DataBalance[]>([]);
-  const { selectedLeftMenuItem, selectedTelephone,packageListUpdate } = useStore();
+  const { selectedLeftMenuItem, selectedTelephone, packageListUpdate } =
+    useStore();
 
+  const disabledItems = [
+    "New Services",
+    "Promotion",
+    "Digital Life",
+    "Bill",
+    "Hot Devices",
+    "Complaints",
+  ]; //menu icons that will disable the left menu upon clicking
   useEffect(() => {
     const fetchData = async () => {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       const data = await fetchDataBalance(selectedTelephone);
 
       const { addOnData, mainData } = data!.reduce(
@@ -39,34 +60,59 @@ const BroadbandSection = () => {
           }
           return acc;
         },
-        { addOnData: [], mainData: [] } as { addOnData: DataBalance[]; mainData: DataBalance[] }
+        { addOnData: [], mainData: [] } as {
+          addOnData: DataBalance[];
+          mainData: DataBalance[];
+        }
       );
 
-      setAddOnData(addOnData)
+      setAddOnData(addOnData);
       setMainData(mainData);
     };
 
     fetchData();
-  }, [selectedTelephone,packageListUpdate]);
+  }, [selectedTelephone, packageListUpdate]);
   return (
-    <Box sx={{ display: "flex", gap: 1, width: "100%",flexGrow:1 }}>
-      <Box sx={{ width: "25%", }}>
+    <Box sx={{ display: "flex", gap: 1, width: "100%", flexGrow: 1 }}>
+      <Box
+        sx={{
+          width: "25%",
+
+          display: disabledItems.includes(selectedLeftMenuItem)
+            ? "none"
+            : "block",
+        }}
+      >
         <MenuLeft />
       </Box>
-      <Box sx={{ width: "75%", height: "100%"}}>
+      <Box
+        sx={{
+          width: disabledItems.includes(selectedLeftMenuItem) ? "100%" : "75%",
+          height: "100%",
+        }}
+      >
         {selectedLeftMenuItem === "Summary" && <BroadbandDetailsPostPaid />}
-        {selectedLeftMenuItem === "Daily Usage" && <UnderConstruction/>}
+        {selectedLeftMenuItem === "Daily Usage" && <UnderConstruction />}
         {selectedLeftMenuItem === "Gift Data" && <UnderConstruction />}
         {selectedLeftMenuItem === "History" && <UnderConstruction />}
         {selectedLeftMenuItem === "Redeem Data" && <UnderConstruction />}
         {selectedLeftMenuItem === "Happy Day" && <UnderConstruction />}
 
-
-        {selectedLeftMenuItem === "Main Packages" && <BroadbandDetailsPrePaid dataBalance={mainData}/>}
-        {selectedLeftMenuItem === "Data Add-Ons" && <BroadbandDetailsPrepaidAddons dataBalance={addOnData}/>}
-        {selectedLeftMenuItem === "BroadbandMainPackage" && <BroadbandPrepaidMainPackages />}
-        {selectedLeftMenuItem === "BroadbandPrepaidPackage" && <BroadbandPrepaidAddOnPackages />}
-        {selectedLeftMenuItem === "Transaction" && <TransactionsHistory serviceId={selectedTelephone} />}
+        {selectedLeftMenuItem === "Main Packages" && (
+          <BroadbandDetailsPrePaid dataBalance={mainData} />
+        )}
+        {selectedLeftMenuItem === "Data Add-Ons" && (
+          <BroadbandDetailsPrepaidAddons dataBalance={addOnData} />
+        )}
+        {selectedLeftMenuItem === "BroadbandMainPackage" && (
+          <BroadbandPrepaidMainPackages />
+        )}
+        {selectedLeftMenuItem === "BroadbandPrepaidPackage" && (
+          <BroadbandPrepaidAddOnPackages />
+        )}
+        {selectedLeftMenuItem === "Transaction" && (
+          <TransactionsHistory serviceId={selectedTelephone} />
+        )}
 
         {selectedLeftMenuItem === "New Services" && <UnderConstruction />}
         {selectedLeftMenuItem === "Promotion" && <UnderConstruction />}
@@ -74,7 +120,6 @@ const BroadbandSection = () => {
         {selectedLeftMenuItem === "Bill" && <UnderConstruction />}
         {selectedLeftMenuItem === "Hot Devices" && <UnderConstruction />}
         {selectedLeftMenuItem === "Complaints" && <UnderConstruction />}
-
       </Box>
     </Box>
   );
