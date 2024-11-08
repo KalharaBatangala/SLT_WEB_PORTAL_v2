@@ -29,7 +29,7 @@ const Banner = () => {
         gap: 1.5,
         flexDirection: "column",
         alignItems: "center",
-        padding: 0.5,
+        padding: 0,
         borderRadius: 2,
         position: "relative",
         height: "195px",

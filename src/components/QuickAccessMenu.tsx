@@ -10,7 +10,7 @@ import useStore from "../services/useAppStore";
 
 const QuickAccessMenu = () => {
   const [selectedItem, setSelectedItem] = useState("");
-  const { serviceDetails } = useStore();
+  const { serviceDetails,setLeftMenuItem } = useStore();
   const isPrepaid =
     serviceDetails?.promotionType === "Prepaid" ||
     serviceDetails?.promotionType === null;
@@ -37,7 +37,10 @@ const QuickAccessMenu = () => {
           return (
             <Grid2 size={6} key={index}>
               <Button
-                onClick={() => setSelectedItem(tile.label)}
+                onClick={() => {
+                  setSelectedItem(tile.label);
+                  setLeftMenuItem(tile.label);
+                }}
                 disabled={disabled}
                 variant="contained"
                 sx={{
