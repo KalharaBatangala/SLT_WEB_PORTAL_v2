@@ -61,11 +61,20 @@ const BroadbandSection = () => {
         {selectedLeftMenuItem === "Redeem Data" && <UnderConstruction />}
         {selectedLeftMenuItem === "Happy Day" && <UnderConstruction />}
 
+
         {selectedLeftMenuItem === "Main Packages" && <BroadbandDetailsPrePaid dataBalance={mainData}/>}
         {selectedLeftMenuItem === "Data Add-Ons" && <BroadbandDetailsPrepaidAddons dataBalance={addOnData}/>}
         {selectedLeftMenuItem === "BroadbandMainPackage" && <BroadbandPrepaidMainPackages />}
         {selectedLeftMenuItem === "BroadbandPrepaidPackage" && <BroadbandPrepaidAddOnPackages />}
         {selectedLeftMenuItem === "Transaction" && <TransactionsHistory serviceId={selectedTelephone} />}
+
+        {selectedLeftMenuItem === "New Services" && <UnderConstruction />}
+        {selectedLeftMenuItem === "Promotion" && <UnderConstruction />}
+        {selectedLeftMenuItem === "Digital Life" && <UnderConstruction />}
+        {selectedLeftMenuItem === "Bill" && <UnderConstruction />}
+        {selectedLeftMenuItem === "Hot Devices" && <UnderConstruction />}
+        {selectedLeftMenuItem === "Complaints" && <UnderConstruction />}
+
       </Box>
     </Box>
   );
