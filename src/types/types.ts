@@ -98,3 +98,38 @@ export interface BillPaymentAPIResponse {
   errorShow: string | null;
   errorCode: string | null;
 }
+export interface OfferDetail {
+  telephoneno: string;
+  eligibledate: string;
+  expiredate: string;
+  packageid: string;
+  eligiblePeriod: string;
+  packageName: string;
+  refno: string;
+  amount: string;
+  imageURL: string;
+}
+
+export interface OfferAvailabilityAPIResponse {
+  map(arg0: (offer: any) => { title: any; activated: any; image: any; }): unknown;
+  isSuccess: boolean;
+  errorMessage: string | null;
+  exceptionDetail: string | null;
+  dataBundle: OfferDetail[];
+  errorShow: string | null;
+  errorCode: string | null;
+}
+
+
+export interface PromotionData {
+  imageURL: string;
+  amount: any;
+  packageName: any;
+  title: string;
+  activated: boolean;
+  image: string;
+}
+
+export interface PromotionProps {
+  telephoneNo: string;
+}

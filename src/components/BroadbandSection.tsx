@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import fetchDataBalance from "../services/fetchDataBalance";
 import useStore from "../services/useAppStore";
 import { DataBalance } from "../types/types";
+import BroadbandPrepaidAddOnPackages from "./BroadBandPrepaidPackageDetails/BroadbandPrepaidAddOnPackages";
 import BroadbandPrepaidMainPackages from "./BroadBandPrepaidPackageDetails/BroadbandPrepaidMainPackages";
 import BroadbandDetailsPostPaid from "./BroadbandDetailsPostPaid";
 import BroadbandDetailsPrePaid from "./BroadbandDetailsPrePaid";
 import BroadbandDetailsPrepaidAddons from "./BroadbandDetailsPrepaidAddons";
 import MenuLeft from "./MenuLeft";
-import TransactionsHistory from "./TransactionsHistory";
-import BroadbandPrepaidAddOnPackages from "./BroadBandPrepaidPackageDetails/BroadbandPrepaidAddOnPackages";
 import Promotion from "./Promotion";
+import TransactionsHistory from "./TransactionsHistory";
 
 const UnderConstruction = () => {
   return (
@@ -116,7 +116,10 @@ const BroadbandSection = () => {
         )}
 
         {selectedLeftMenuItem === "New Services" && <UnderConstruction />}
-        {selectedLeftMenuItem === "Promotion" && <Promotion/>}
+        {selectedLeftMenuItem === "Promotion" && (
+          <Promotion telephoneNo={selectedTelephone} />
+        )}
+
         {selectedLeftMenuItem === "Digital Life" && <UnderConstruction />}
         {selectedLeftMenuItem === "Bill" && <UnderConstruction />}
         {selectedLeftMenuItem === "Hot Devices" && <UnderConstruction />}
