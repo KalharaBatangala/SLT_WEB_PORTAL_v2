@@ -1,42 +1,50 @@
-import React, { useRef } from "react";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Typography,
-  IconButton,
-} from "@mui/material";
-import Image1 from "../assets/Images/promotion1.jpeg";
-import Image2 from "../assets/Images/promotion2.jpeg";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { Box, Button, Card, CardContent, IconButton, Typography } from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
+import checkOfferAvailability from "../services/postpaid/checkOfferAvailability";
 
-const promotions = [
-  {
-    title: "NONSTOP YouTube",
-    activated: true,
-    image: Image1,
-  },
-  {
-    title: "UNLIMITED YouTube",
-    activated: false,
-    image: Image2,
-  },
-  {
-    title: "NONSTOP YouTube",
-    activated: true,
-    image: Image1,
-  },
-  {
-    title: "UNLIMITED YouTube",
-    activated: false,
-    image: Image2,
-  },
-];
+interface PromotionData {
+  title: string;
+  activated: boolean;
+  image?: string;  
+}
 
-const Promotion: React.FC = () => {
+interface PromotionProps {
+  telephoneNo: string; 
+}
+
+const Promotion: React.FC<PromotionProps> = ({ telephoneNo }) => {
+  const [promotions, setPromotions] = useState<PromotionData[]>([]); 
+  const [loading, setLoading] = useState<boolean>(true); 
+  const [error, setError] = useState<string | null>(null); 
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const fetchPromotions = async () => {
+      try {
+        // Ensure you pass the correct number of arguments to checkOfferAvailability
+        const offerData: unknown = await checkOfferAvailability(telephoneNo);
+
+        if (offerData && Array.isArray(offerData)) {
+          const fetchedPromotions: PromotionData[] = offerData.map((offer: any) => ({
+            title: offer.packageName,  
+            activated: offer.isActive,  
+            image: offer.imageURL || "", 
+          }));
+          setPromotions(fetchedPromotions);
+        } else {
+          setPromotions([]); 
+        }
+      } catch (error) {
+        setError("Failed to fetch promotions.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPromotions();
+  }, [telephoneNo]); // Re-fetch when the telephoneNo changes
 
   const scroll = (offset: number) => {
     if (scrollRef.current) {
@@ -61,99 +69,121 @@ const Promotion: React.FC = () => {
         ── Promotion ──
       </Typography>
 
-      <Box
-        sx={{
-          position: "relative",
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <IconButton
-          onClick={() => scroll(-200)}
-          sx={{ position: "absolute", left: 0, zIndex: 1 }}
-        >
-          <ArrowBackIosIcon />
-        </IconButton>
+      {/* If loading, display loading text */}
+      {loading && (
+        <Typography variant="body1" color="textSecondary">
+          Loading promotions...
+        </Typography>
+      )}
 
+      {/* If there's an error, display error message */}
+      {error && (
+        <Typography variant="body1" color="error">
+          {error}
+        </Typography>
+      )}
+
+      {/* If no promotions found, display the no promotions message */}
+      {!loading && !error && promotions.length === 0 && (
+        <Typography variant="body1" color="textSecondary">
+          This Number has no promotion.
+        </Typography>
+      )}
+
+      {/* Render promotions if available */}
+      {!loading && !error && promotions.length > 0 && (
         <Box
-          ref={scrollRef}
           sx={{
-            display: "flex",
-            gap: 1.5,
-            overflowX: "auto",
-            scrollBehavior: "smooth",
+            position: "relative",
             width: "100%",
-            padding: 3,
+            display: "flex",
+            alignItems: "center",
           }}
         >
-          {promotions.map((promo, index) => (
-            <Card
-              key={index}
-              sx={{
-                minWidth: "28%",
-                backgroundColor: "#3076B2",
-                color: "white",
-                borderRadius: "10px",
-                transition: "transform 0.3s, margin 0.3s ease-in-out",
-                "&:hover": {
-                  backgroundColor: "#0056A2",
-                  transform: "scale(1.09)",
-                  marginLeft: 3,
-                  marginRight: 3,
-                },
-              }}
-            >
-              <CardContent sx={{ textAlign: "center" }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
+          <IconButton
+            onClick={() => scroll(-200)}
+            sx={{ position: "absolute", left: 0, zIndex: 1 }}
+          >
+            <ArrowBackIosIcon />
+          </IconButton>
+
+          <Box
+            ref={scrollRef}
+            sx={{
+              display: "flex",
+              gap: 1.5,
+              overflowX: "auto",
+              scrollBehavior: "smooth",
+              width: "100%",
+              padding: 3,
+            }}
+          >
+            {promotions.map((promo, index) => (
+              <Card
+                key={index}
+                sx={{
+                  minWidth: "28%",
+                  backgroundColor: "#3076B2",
+                  color: "white",
+                  borderRadius: "10px",
+                  transition: "transform 0.3s, margin 0.3s ease-in-out",
+                  "&:hover": {
+                    backgroundColor: "#0056A2",
+                    transform: "scale(1.09)",
+                    marginLeft: 3,
+                    marginRight: 3,
+                  },
+                }}
+              >
+                <CardContent sx={{ textAlign: "center" }}>
                   <Box
                     sx={{
-                      height: "195px",
-                      width: "100%",
-                      borderRadius: "10px",
-                      backgroundImage: `url(${promo.image})`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                      mt: 1,
-                      mb:1,
-                    }}
-                  ></Box>
-                  <Typography variant="h6">{promo.title}</Typography>
-                  
-                  <Button
-                    variant="contained"
-                    sx={{
-                        mt:1,
-                      backgroundColor: promo.activated ? "#4FD745" : "white",
-                      color: promo.activated ? "white" : "#4FD745",
-                      "&:hover": {
-                        backgroundColor: promo.activated
-                          ? "#4FD745"
-                          : "#E0E0E0",
-                      },
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
                     }}
                   >
-                    {promo.activated ? "Activated" : "Activate"}
-                  </Button>
-                </Box>
-              </CardContent>
-            </Card>
-          ))}
-        </Box>
+                    <Box
+                      sx={{
+                        height: "195px",
+                        width: "100%",
+                        borderRadius: "10px",
+                        backgroundImage: `url(${promo.image})`, // Use the image URL from API
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        mt: 1,
+                        mb: 1,
+                      }}
+                    ></Box>
+                    <Typography variant="h6">{promo.title}</Typography>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        mt: 1,
+                        backgroundColor: promo.activated ? "#4FD745" : "white",
+                        color: promo.activated ? "white" : "#4FD745",
+                        "&:hover": {
+                          backgroundColor: promo.activated ? "#4FD745" : "#E0E0E0",
+                        },
+                      }}
+                    >
+                      {promo.activated ? "Activated" : "Activate"}
+                    </Button>
 
-        <IconButton
-          onClick={() => scroll(200)}
-          sx={{ position: "absolute", right: 0, zIndex: 1 }}
-        >
-          <ArrowForwardIosIcon />
-        </IconButton>
-      </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            ))}
+          </Box>
+
+          <IconButton
+            onClick={() => scroll(200)}
+            sx={{ position: "absolute", right: 0, zIndex: 1 }}
+          >
+            <ArrowForwardIosIcon />
+          </IconButton>
+        </Box>
+      )}
 
       <Box sx={{ display: "flex", justifyContent: "center", gap: 1, mt: 2 }}>
         <Box
