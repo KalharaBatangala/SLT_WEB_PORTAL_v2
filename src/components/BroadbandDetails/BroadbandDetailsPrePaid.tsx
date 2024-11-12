@@ -1,4 +1,4 @@
-import { DataBalance } from "../types/types";
+import { DataBalance } from "../../types/types";
 import BroadbandDetailsPrepaidTemplate from "./BroadbandDetailsPrepaidTemplate";
 
 interface BroadbandDetailsPrePaidProps {

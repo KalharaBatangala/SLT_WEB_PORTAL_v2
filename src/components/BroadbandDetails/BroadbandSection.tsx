@@ -2,19 +2,19 @@
 
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import fetchDataBalance from "../services/fetchDataBalance";
-import useStore from "../services/useAppStore";
-import { DataBalance } from "../types/types";
-import BillPage from "./BillDetails/Billpage";
-import BroadbandPrepaidAddOnPackages from "./BroadBandPrepaidPackageDetails/BroadbandPrepaidAddOnPackages";
-import BroadbandPrepaidMainPackages from "./BroadBandPrepaidPackageDetails/BroadbandPrepaidMainPackages";
+import fetchDataBalance from "../../services/fetchDataBalance";
+import useStore from "../../services/useAppStore";
+import { DataBalance } from "../../types/types";
+import BillPage from "../BillDetails/Billpage";
+import BroadbandPrepaidAddOnPackages from "../BroadBandPrepaidPackageDetails/BroadbandPrepaidAddOnPackages";
+import BroadbandPrepaidMainPackages from "../BroadBandPrepaidPackageDetails/BroadbandPrepaidMainPackages";
 import BroadbandDetailsPostPaid from "./BroadbandDetailsPostPaid";
 import BroadbandDetailsPrePaid from "./BroadbandDetailsPrePaid";
 import BroadbandDetailsPrepaidAddons from "./BroadbandDetailsPrepaidAddons";
 
-import MenuLeft from "./MenuLeft";
-import Promotion from "./Promotion";
-import TransactionsHistory from "./TransactionsHistory";
+import MenuLeft from "../MenuLeft";
+import Promotion from "../Promotion";
+import TransactionsHistory from "../TransactionsHistory";
 
 const UnderConstruction = () => {
   return (

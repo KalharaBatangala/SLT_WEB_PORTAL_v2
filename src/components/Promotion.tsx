@@ -63,12 +63,13 @@ const Promotion: React.FC<PromotionProps> = ({ telephoneNo }) => {
         padding: 1,
         borderRadius: "10px",
         boxShadow: "0px 3px 3px #0000004A",
+        height: "60vh",
       }}
     >
-      <Typography variant="h6" align="center" sx={{ fontWeight: "bold" }}>
+      <Typography variant="body2" align="center" sx={{fontSize:24, fontWeight: "bold" }}>
         ── Promotion ──
       </Typography>
-
+      <Box sx={{flexGrow:1}}></Box>
       {/* If loading, display loading text */}
       {loading && (
         <Typography variant="body1" color="textSecondary">
@@ -85,11 +86,11 @@ const Promotion: React.FC<PromotionProps> = ({ telephoneNo }) => {
 
       {/* If no promotions found, display the no promotions message */}
       {!loading && !error && promotions.length === 0 && (
-        <Typography variant="body1" color="textSecondary">
-          This Number has no promotion.
+        <Typography variant="body2" color="textSecondary" sx={{fontSize:24}}>
+          This Number has no promotions available.
         </Typography>
       )}
-
+      <Box sx={{flexGrow:1}}></Box>
       {/* Render promotions if available */}
       {!loading && !error && promotions.length > 0 && (
         <Box
@@ -97,6 +98,7 @@ const Promotion: React.FC<PromotionProps> = ({ telephoneNo }) => {
             position: "relative",
             width: "100%",
             display: "flex",
+            justifyContent: "center",
             alignItems: "center",
           }}
         >
@@ -111,11 +113,13 @@ const Promotion: React.FC<PromotionProps> = ({ telephoneNo }) => {
             ref={scrollRef}
             sx={{
               display: "flex",
+              justifyContent: "center",
               gap: 1.5,
               overflowX: "auto",
               scrollBehavior: "smooth",
               width: "100%",
-              padding: 3,
+              paddingY: 3,
+              paddingX: 4,
             }}
           >
             {promotions.map((promo, index) => (
@@ -155,7 +159,7 @@ const Promotion: React.FC<PromotionProps> = ({ telephoneNo }) => {
                         mb: 1,
                       }}
                     ></Box>
-                    <Typography variant="h6">{promo.title}</Typography>
+                    <Typography variant="body2"sx={{fontSize:20}}>{promo.title}</Typography>
                     <Button
                       variant="contained"
                       sx={{
@@ -167,7 +171,9 @@ const Promotion: React.FC<PromotionProps> = ({ telephoneNo }) => {
                         },
                       }}
                     >
+                      <Typography variant="body2" sx={{fontSize:16}}>
                       {promo.activated ? "Activated" : "Activate"}
+                      </Typography>
                     </Button>
 
                   </Box>

@@ -1,12 +1,12 @@
+import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { Box, Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import WatermarkLogo from "../assets/Images/watermarklogo.png";
-import fetchServiceDetailByTelephone from "../services/fetchServiceDetails";
-import { parseTime } from "../services/helperFunctions";
-import useStore from "../services/useAppStore";
-import { DataBalance, ServiceDetailsAPIResponse } from "../types/types";
-import CircularProgressBar from "./CircularProgressBar";
-import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
+import fetchServiceDetailByTelephone from "../../services/fetchServiceDetails";
+import { parseTime } from "../../services/helperFunctions";
+import useStore from "../../services/useAppStore";
+import { DataBalance, ServiceDetailsAPIResponse } from "../../types/types";
+import CircularProgressBar from "../CircularProgressBar";
+import WatermarkLogo from "../../assets/Images/watermarklogo.png";
 
 const commonTextStyle = {
   fontSize: "14px",
