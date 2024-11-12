@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { BillingInquiry, BillPaymentAPIResponse } from '../../types/types';
+import useStore from '../useAppStore';
 
 const fetchBillingDetails = async (telephoneNo: string, accountNo: string): Promise<BillingInquiry[] | null> => {
   // Log the incoming parameters
@@ -22,9 +23,17 @@ const fetchBillingDetails = async (telephoneNo: string, accountNo: string): Prom
       }
     );
 
-    console.log(`Billing details for ${telephoneNo}:`, response.data);
+    // Print the full API response
+    console.log(`Full API response for ${telephoneNo}:`, JSON.stringify(response.data, null, 2));
 
     if (response.data.isSuccess && response.data.dataBundle) {
+      // Update the Zustand store with selected telephone and account number
+      useStore.getState().setSelectedTelephone(telephoneNo);
+      useStore.getState().setSelectedAccountNo(accountNo);
+      
+      // Log the updated store state
+      console.log('Updated Zustand store state:', useStore.getState());
+
       // Map the billing inquiries to include billAmount
       return response.data.dataBundle.listofbillingInquiryType.map(bill => ({
         ...bill,

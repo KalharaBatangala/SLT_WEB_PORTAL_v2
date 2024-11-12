@@ -80,12 +80,22 @@ export interface Transaction {
 }
 
 export interface BillingInquiry {
+  accountNumber(arg0: string, accountNumber: any): unknown;
+  telephoneNumber(arg0: string, telephoneNumber: any): unknown;
+  amount: string;
+  dueDate: string;
+  lastPayment: string;
   billAmount: string;
   lastBillDate: string;
   paymentDueDate: string;
   lastPaymentDate: string;
   lastPaymentAmount: string;
   outstandingBalance: string;
+}
+
+export interface BillDetailsProps {
+  selectedTab: string;
+  billingDetails: BillingInquiry[];
 }
 
 export interface BillPaymentAPIResponse {
@@ -132,4 +142,42 @@ export interface PromotionData {
 
 export interface PromotionProps {
   telephoneNo: string;
+}
+
+
+
+export interface BillHistoryDetail {
+  billDate: string;
+  dueDate: string;
+  amount: string;
+  status: string;
+ 
+}
+
+export interface BillHistoryAPIResponse {
+  isSuccess: boolean;
+  errorMessage: string | null;
+  exceptionDetail: string | null;
+  dataBundle: BillHistoryDetail[];
+  errorShow: string | null;
+  errorCode: string | null;
+}
+
+export interface Bill {
+  outstanding: string;
+  billValue: string;
+  billMonth: string;
+  payments: string;
+}
+
+export interface BillHistoryProps {
+  selectedTab: string;
+  billingHistory: {
+    isSuccess: boolean;
+    errorMessage: string | null;
+    exceptionDetail: string | null;
+    listofBillHistoryDetail: Bill[];
+  };
+  telephoneNo: string;
+  accountNo: string;
 }

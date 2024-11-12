@@ -1,14 +1,17 @@
 // src/components/BroadbandSection.js
+
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import fetchDataBalance from "../services/fetchDataBalance";
 import useStore from "../services/useAppStore";
 import { DataBalance } from "../types/types";
+import BillPage from "./BillDetails/Billpage";
 import BroadbandPrepaidAddOnPackages from "./BroadBandPrepaidPackageDetails/BroadbandPrepaidAddOnPackages";
 import BroadbandPrepaidMainPackages from "./BroadBandPrepaidPackageDetails/BroadbandPrepaidMainPackages";
 import BroadbandDetailsPostPaid from "./BroadbandDetailsPostPaid";
 import BroadbandDetailsPrePaid from "./BroadbandDetailsPrePaid";
 import BroadbandDetailsPrepaidAddons from "./BroadbandDetailsPrepaidAddons";
+
 import MenuLeft from "./MenuLeft";
 import Promotion from "./Promotion";
 import TransactionsHistory from "./TransactionsHistory";
@@ -36,8 +39,7 @@ const UnderConstruction = () => {
 const BroadbandSection = () => {
   const [addOnData, setAddOnData] = useState<DataBalance[]>([]);
   const [mainData, setMainData] = useState<DataBalance[]>([]);
-  const { selectedLeftMenuItem, selectedTelephone, packageListUpdate } =
-    useStore();
+  const { selectedLeftMenuItem, selectedTelephone, selectedAccountNo, packageListUpdate } = useStore();
 
   const disabledItems = [
     "New Services",
@@ -46,7 +48,8 @@ const BroadbandSection = () => {
     "Bill",
     "Hot Devices",
     "Complaints",
-  ]; //menu icons that will disable the left menu upon clicking
+  ]; // menu icons that will disable the left menu upon clicking
+
   useEffect(() => {
     const fetchData = async () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -69,19 +72,23 @@ const BroadbandSection = () => {
 
       setAddOnData(addOnData);
       setMainData(mainData);
+
+      // Log the fetched data and selected menu item for debugging
+      console.log("Fetched Data:", { addOnData, mainData });
+      console.log("Selected Left Menu Item:", selectedLeftMenuItem);
+      console.log("Selected Telephone:", selectedTelephone);
+      console.log("Selected Account No:", selectedAccountNo);
     };
 
     fetchData();
   }, [selectedTelephone, packageListUpdate]);
+
   return (
     <Box sx={{ display: "flex", gap: 1, width: "100%", flexGrow: 1 }}>
       <Box
         sx={{
           width: "25%",
-
-          display: disabledItems.includes(selectedLeftMenuItem)
-            ? "none"
-            : "block",
+          display: disabledItems.includes(selectedLeftMenuItem) ? "none" : "block",
         }}
       >
         <MenuLeft />
@@ -92,6 +99,7 @@ const BroadbandSection = () => {
           height: "100%",
         }}
       >
+        {/* Rendering based on selectedLeftMenuItem */}
         {selectedLeftMenuItem === "Summary" && <BroadbandDetailsPostPaid />}
         {selectedLeftMenuItem === "Daily Usage" && <UnderConstruction />}
         {selectedLeftMenuItem === "Gift Data" && <UnderConstruction />}
@@ -116,18 +124,26 @@ const BroadbandSection = () => {
         )}
 
         {selectedLeftMenuItem === "New Services" && <UnderConstruction />}
+
         {selectedLeftMenuItem === "Promotion" && (
           <Promotion telephoneNo={selectedTelephone} />
         )}
 
         {selectedLeftMenuItem === "Digital Life" && <UnderConstruction />}
-        {selectedLeftMenuItem === "Bill" && <UnderConstruction />}
+        
+        {selectedLeftMenuItem === "Bill" && (
+          <BillPage 
+            telephoneNo={selectedTelephone} 
+            accountNo={selectedAccountNo}  // Pass account number here
+          />
+        )}
+
         {selectedLeftMenuItem === "Hot Devices" && <UnderConstruction />}
         {selectedLeftMenuItem === "Complaints" && <UnderConstruction />}
-
       </Box>
     </Box>
   );
 };
+
 
 export default BroadbandSection;
