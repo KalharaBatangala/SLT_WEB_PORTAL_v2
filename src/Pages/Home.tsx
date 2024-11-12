@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import homebackgroundImage from "../../src/assets/Images/HomeBackground.png";
 import AccountBalance from "../components/AccountBalance";
 import Banner from "../components/Banner";
-import BroadbandSection from "../components/BroadbandSection";
+import BroadbandSection from "../components/BroadbandDetails/BroadbandSection";
 import CustomAppBar from "../components/CustomAppBar";
 import CustomNavBar from "../components/CustomNavBar";
 import QuickAccessMenu from "../components/QuickAccessMenu";

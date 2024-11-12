@@ -2,11 +2,11 @@ import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useEffect, useState } from "react";
-import WatermarkLogo from "../assets/Images/watermarklogo.png";
-import fetchServiceDetailByTelephone from "../services/fetchServiceDetails";
-import useStore from "../services/useAppStore";
-import { ServiceDetailsAPIResponse } from "../types/types";
-import CircularProgressBar from "./CircularProgressBar";
+import fetchServiceDetailByTelephone from "../../services/fetchServiceDetails";
+import useStore from "../../services/useAppStore";
+import { ServiceDetailsAPIResponse } from "../../types/types";
+import CircularProgressBar from "../CircularProgressBar";
+import WatermarkLogo from "../../assets/Images/watermarklogo.png";
 
 const commonTextStyle = {
   fontSize: "14px",

@@ -42,7 +42,9 @@ const QuickAccessMenu = () => {
   ];
 
   const disabledItems = ["Reload", "Complaints"];
-
+  const handleRedirect = () => {
+    window.location.href = 'https://eteleshop.slt.lk/';
+  };
   return (
     <Box
       sx={{
@@ -58,6 +60,8 @@ const QuickAccessMenu = () => {
                 onClick={() => {
                   setSelectedItem(tile.label);
                   setLeftMenuItem(tile.label);
+                  if (tile.label === "Hot Devices") {
+                    handleRedirect();}
                 }}
                 onMouseEnter={() => setHoveredItem(tile.label)}
                 onMouseLeave={() => setHoveredItem("")}
